@@ -1,13 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "."
-		},
-		{
+			"name": "Bbarolo-1.7",
 			"path": "../Bbarolo-1.7"
 		},
 		{
+			"name": "datacubes",
 			"path": "../datacubes"
+		},
+		{
+			"name": "code",
+			"path": "."
 		}
 	],
 	"settings": {}

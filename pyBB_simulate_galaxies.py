@@ -11,26 +11,26 @@ xysize, vsize = 51, 128         # Number of pixels/channels
 pixsize   = 20                  # Size of pixels (arcsec)
 chwidth   = 5                  # Channel width (km/s)
 beamFWHM  = 60                  # Beam size (arcsec)
-modname   = 'model4'            # Name of the model
-noiserms  = 0.04                # RMS noise in Jy/beam
+modname   = 'model7'            # Name of the model
+noiserms  = 0.02                # RMS noise in Jy/beam
 
 # This the main BBarolo executable
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
 # Basic parameters of the model
-radmax  = 180
+radmax  = 220
 radii   = np.arange(0,radmax,pixsize)
 dens    = 50*np.exp(-radii/400-100/(0.5*radii+100))
 vrot    = 2./np.pi*200.*np.arctan(radii/10.)
 vdisp   = np.full(len(radii),10.)
-pa      = np.full(len(radii),40.)
+pa      = np.full(len(radii),30.)
 inc     = np.full(len(radii),60.)
-z0      = np.full(len(radii),10.)
+z0      = np.full(len(radii),30.)
 
 # Below if we wanna define a warp or a flare (these are linear for example)
-rstart = 150
+#rstart = 150
 #pa[radii>rstart] = -(radii[radii>rstart]-rstart)/20.+pa[0]
-inc[radii>rstart] = -(radii[radii>rstart]-rstart)/80.+inc[0]
+#inc[radii>rstart] = -(radii[radii>rstart]-rstart)/80.+inc[0]
 #z0[radii>rstart] = (radii[radii>rstart]-rstart)/4. + z0[0]
 
 # Initializing a SimulatedGalaxyCube instance

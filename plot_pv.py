@@ -17,13 +17,13 @@ plt.rc('font',family='sans-serif',serif='Helvetica',size=10)
 params = {'text.usetex': False, 'mathtext.fontset': 'cm', 'mathtext.default': 'regular'} 
 plt.rcParams.update(params) 
 
-galaxy = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/output/model2/"
+galaxy = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/output/model1/"
 model = '/Users/blanca/Documents/TESIS/software/codes/results/model_result_barba/' 
-fitsname = "/Users/blanca/Documents/TESIS/software/codes/models/model2.fits"
+fitsname = "/Users/blanca/Documents/TESIS/software/codes/models/model1.fits"
 
 #here i am calling the files and directory
-gname = 'model2' 
-outfolder = '/Users/blanca/Documents/TESIS/software/codes/pv_plot' 
+gname = 'model1' 
+outfolder = '/Users/blanca/Documents/TESIS/software/codes/pv_plot/' 
 twostage = 1 
 plotmask = 0  
 zmin, zmax = 21, 106
