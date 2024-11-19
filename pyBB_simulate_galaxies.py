@@ -7,25 +7,26 @@ import numpy as np
 from pyBBarolo.utils import SimulatedGalaxyCube
 
 # General parameters for datacube
-xysize, vsize = 51, 128         # Number of pixels/channels
-pixsize   = 20                  # Size of pixels (arcsec)
-chwidth   = 5                  # Channel width (km/s)
-beamFWHM  = 60                  # Beam size (arcsec)
-modname   = 'model7'            # Name of the model
-noiserms  = 0.02                # RMS noise in Jy/beam
+xysize, vsize = 150, 62        # Number of pixels/channels   #Value in model1 = 51,128
+pixsize   = 20                  # Size of pixels (arcsec)     #Value in model1 = 20
+chwidth   = 5                   # Channel width (km/s)        #Value in model1 = 5
+beamFWHM  = 60                  # Beam size (arcsec)          #Value in model1 = 60
+modname   = 'model1_4'            # Name of the model           
+noiserms  = 0.01                # RMS noise in Jy/beam        #Value in model1 = 0.01
 
 # This the main BBarolo executable
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
 # Basic parameters of the model
-radmax  = 220
-radii   = np.arange(0,radmax,pixsize)
+radmax  = 1216.240                        #Value in model1 = 240
+radii   = np.arange(0,radmax,pixsize) 
 dens    = 50*np.exp(-radii/400-100/(0.5*radii+100))
 vrot    = 2./np.pi*200.*np.arctan(radii/10.)
-vdisp   = np.full(len(radii),10.)
-pa      = np.full(len(radii),30.)
-inc     = np.full(len(radii),60.)
-z0      = np.full(len(radii),30.)
+vdisp   = np.full(len(radii),10.)         #Value in model1 = 10
+pa      = np.full(len(radii),30.)         #Value in model1 = 30
+inc     = np.full(len(radii),60.)         #Value in model1 = 60
+z0      = np.full(len(radii),10.)         #Value in model1 = 30
+vsys    = np.full(len(radii),132.8)       #Value in model1 = 30
 
 # Below if we wanna define a warp or a flare (these are linear for example)
 #rstart = 150
@@ -39,7 +40,7 @@ s = SimulatedGalaxyCube(axisDim=[xysize, xysize, vsize],\
                         beam=beamFWHM/3600., bunit='JY/BEAM', obj=modname)
 
 # Setting up galaxy parameters (if parameters are not given, they are random!)
-s.define_galaxy(radii=radii,vsys=40,vdisp=vdisp,inc=inc,pa=pa,\
+s.define_galaxy(radii=radii,vsys=vsys,vdisp=vdisp,inc=inc,pa=pa,\
                 dens=dens,z0=z0,vrot=vrot,warpinc=False,warppa=False)
 print(s)
 
