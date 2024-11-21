@@ -1,9 +1,0 @@
-model1_1:
-
-model1_2:
-
-model1_3:
-
-model1_4: 
-24656it [6:15:55,  1.09it/s, batch: 4 | bound: 46 | nc: 1 | ncall: 765940 | eff(%):  3.151 | loglstar: -60.819 < -50.491 < -53.431 | logz: -77.796 +/-  0.169 | stop:  0.707]          
-model1_5:
