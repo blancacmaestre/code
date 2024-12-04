@@ -12,7 +12,7 @@ xysize, vsize = 75, 62        # Number of pixels/channels   #Value in model1 = 5
 pixsize   = 32                  # Size of pixels (arcsec)     #Value in model1 = 20
 chwidth   = -5.12                   # Channel width (km/s)        #Value in model1 = 5
 beamFWHM  = 180                  # Beam size (arcsec)          #Value in model1 = 60
-modname   = 'model4'            # Name of the model           
+modname   = 'model6'            # Name of the model           
 noiserms  = 0.0015              # RMS noise in Jy/beam        #Value in model1 = 0.01
 
 # This the main BBarolo executable
@@ -38,7 +38,7 @@ vrot_shape = "normal, taken from values of what Bbarlo got with ngc2403"
 vdisp   = np.full(len(radii),20.)         #Value in model1 = 10
 vdisp_shape = "linearly decreasing from 30 to 10"
 pa      = np.full(len(radii),124.147)       #Value in model1 = 30 # actual angle of ngc2405 is 123.7
-inc     = np.full(len(radii),50.988)         #Value in model1 = 60
+inc     = np.full(len(radii),70)         #Value in model1 = 60
 z0      = np.full(len(radii),0.)         #Value in model1 = 30
 vsys    = np.full(len(radii),134.109)       #Value in model1 = 30
 
