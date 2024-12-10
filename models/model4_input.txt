@@ -4,10 +4,10 @@ CUBE PARAMETERS
 
 Number of pixels in x/y = 75
 Size of pixels (arcsec)= 75
-Number of channels = 75
+Number of channels = 62
 Channel width = -5.12
 Beam width = 180
-RMS noise in Jy/beam = 75
+RMS noise in Jy/beam = 0.0015
 crvals = [114.22, 65.58, 289.61]
 crpixs = [38.0, 38.0, 1]
 

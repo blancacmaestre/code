@@ -1,0 +1,32 @@
+Name of the model = model3_70
+
+CUBE PARAMETERS
+
+Number of pixels in x/y = 75
+Size of pixels (arcsec)= 32
+Number of channels = 62
+Channel width = -5.12
+Beam width = 180
+RMS noise in Jy/beam = 0.0015
+crvals = [114.22, 65.58, 289.61]
+crpixs = [38.0, 38.0, 1]
+
+GALAXY PARAMETERS
+
+Maximum radius of galaxy = 1250
+Beam width = 180
+Number of radii = 40
+Density profile initial value = 1.0
+Density ptofile shape = constant, value 1
+
+VELOCITIES
+Rotational velocity initial value = 62.2
+Rotational velocity shape = I did an arctan shape,  200 + 2./np.pi*400*np.arctan(radii/270.)
+Velocity dispersion initial value= 30.0
+Velocity dispersion shape = linear decreasing from 30km/s to 10km/s
+
+GEOMETRY
+Position angle = 124.147
+Inclination = 70
+Thickness = 0.0
+Systemic velocity (km/s) = 134.109

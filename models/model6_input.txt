@@ -23,7 +23,7 @@ VELOCITIES
 Rotational velocity initial value = 62.2
 Rotational velocity shape = normal, taken from values of what Bbarlo got with ngc2403
 Velocity dispersion initial value= 20.0
-Velocity dispersion shape = linearly decreasing from 30 to 10
+Velocity dispersion shape = constant, 20 
 
 GEOMETRY
 Position angle = 124.147
