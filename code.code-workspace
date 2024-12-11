@@ -9,7 +9,6 @@
 			"path": "../datacubes"
 		},
 		{
-			"name": "pyBBarolo",
 			"path": "../Bbarolo-1.7/pyBBarolo"
 		}
 	],
