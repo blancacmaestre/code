@@ -7,26 +7,28 @@ import numpy as np
 from pyBBarolo.utils import SimulatedGalaxyCube
 from astropy.table import Table 
 import matplotlib.pyplot as plt
+from pyBBarolo.wrapper import PVSlice
 
 # General parameters for datacube
 xysize, vsize = 75, 62        # Number of pixels/channels   #Value in model1 = 51,128
 pixsize   = 32                  # Size of pixels (arcsec)     #Value in model1 = 20
 chwidth   =  -5.12                  # Channel width (km/s)        #Value in model1 = 5
-beamFWHM  = 180                  # Beam size (arcsec)          #Value in model1 = 60
-modname   = 'lin_vdisp_180_test'            # Name of the model           
+beamFWHM  = 360                  # Beam size (arcsec)          #Value in model1 = 60
+modname   = 'lin_vdisp_360'            # Name of the model           
 noiserms  = 0.015              # RMS noise in Jy/beam        #Value in model1 = 0.01
 
 # This the main BBarolo executable
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
-ringfile = "/Users/blanca/Documents/TESIS/software/code/models/ngc2403_180/rings_final1.txt"
+ringfile = "/Users/blanca/Documents/TESIS/software/code/models/ngc2403_360/rings_final1.txt"
 t = Table.read(ringfile,format='ascii')
 
 
 # Basic parameters of the model
 radmax  = 1250                        #Value in model1 = 240
-radii   = np.arange(0,radmax,pixsize) #change this
-#print(len(radii))
+radii   = np.arange(0,radmax,beamFWHM) #change this
+print(len(radii))
+
 
 dens    = np.full(len(radii),1.) 
 #dens   = 50*np.exp(-radii/400-100/(0.5*radii+100))
@@ -34,7 +36,7 @@ dens_shape = "constant, value 1"
 
 vrot   = t['VROT(km/s)']
 #vrot    = 200 + 2./np.pi*200*np.arctan(2 *radii/270.)
-#print(vrot)
+print(len(vrot))
 
 #plt.plot(vrot)
 #plt.show()
@@ -45,7 +47,7 @@ vdisp   = np.linspace(30, 10, len(radii)).tolist()
 #vdisp    = 10 + 30*np.exp(-radii/180.)
 vdisp_shape = "linear decreasing from 30km/s to 10km/s"
 pa      = np.full(len(radii),123.7)       #Value in model1 = 30 # actual angle of ngc2405 is 123.7
-inc     = np.full(len(radii),70)         #Value in model1 = 60 value in ngc2403 62.9
+inc     = np.full(len(radii),62.9)         #Value in model1 = 60 value in ngc2403 62.9
 z0      = np.full(len(radii),0.)         #Value in model1 = 30
 vsys    = np.full(len(radii),132.8)       #Value in model1 = 30
 
@@ -126,8 +128,13 @@ with open(os.path.join(f"models/{modname}", f"{modname}_input.txt"), 'w') as fil
     file.write(f"Inclination = {inc[0]}\n")
     file.write(f"Thickness = {z0[0]}\n")
     file.write(f"Systemic velocity (km/s) = {vsys[0]}\n")
-    
 
+v = Table.read(f"models/{modname}/{modname}_params.txt",format='ascii')   
+    
+major_GAL = PVSlice( fitsname=f"models/{modname}/{modname}.fits", XPOS_PV = np.mean(v['XPOS']), YPOS_PV = np.mean(v['YPOS']),  PA_PV = np.mean(v['PA']), OUTFOLDER = f"models/{modname}/slices")              
+major_GAL.run(BBmain)
+minor_GAL = PVSlice( fitsname=f"models/{modname}/{modname}.fits", XPOS_PV = np.mean(v['XPOS']), YPOS_PV = np.mean(v['YPOS']),  PA_PV = np.mean(v['PA']+90), OUTFOLDER= f"models/{modname}/slices")              
+minor_GAL.run(BBmain)
 
 
 print(f"{modname}_initial_params.txt created with default parameters.")
