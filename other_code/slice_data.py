@@ -15,7 +15,7 @@ import numpy as np
 from astropy.io import fits
 
 # Load the data cube (FITS file)
-cube_file = "/Users/blanca/Documents/TESIS/software/code/models/model_lin_vdisp_360/lin_vdisp_360.fits"  # Replace with your file path
+cube_file = "/Users/blanca/Documents/TESIS/software/code/OLD_TESTS/models_old/model1.fits"  # Replace with your file path
  # Replace with the actual file path
 hdul = fits.open(cube_file)
 header = hdul[0].header
@@ -33,3 +33,6 @@ velocity = CRVAL3 + (channel_index - CRPIX3) * CDELT3
 
 # Print the result
 print(f"Velocity at channel {channel_index}: {velocity} km/s")
+
+
+
