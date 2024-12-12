@@ -1,0 +1,32 @@
+Name of the model = model3_70_360
+
+CUBE PARAMETERS
+
+Number of pixels in x/y = 75
+Size of pixels (arcsec)= 32
+Number of channels = 62
+Channel width = -5.12
+Beam width = 360
+RMS noise in Jy/beam = 0.015
+crvals = [114.22, 65.58, 289.61]
+crpixs = [38.0, 38.0, 1]
+
+GALAXY PARAMETERS
+
+Maximum radius of galaxy = 1250
+Beam width = 360
+Number of radii = 4
+Density profile initial value = 1.0
+Density ptofile shape = constant, value 1
+
+VELOCITIES
+Rotational velocity initial value = 102.973
+Rotational velocity shape = vrot of ngc2403 smoothed
+Velocity dispersion initial value= 30.0
+Velocity dispersion shape = linear decreasing from 30km/s to 10km/s
+
+GEOMETRY
+Position angle = 123.7
+Inclination = 70
+Thickness = 0.0
+Systemic velocity (km/s) = 132.8

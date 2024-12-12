@@ -13,19 +13,20 @@ xysize, vsize = 75, 62        # Number of pixels/channels   #Value in model1 = 5
 pixsize   = 32                  # Size of pixels (arcsec)     #Value in model1 = 20
 chwidth   =  -5.12                  # Channel width (km/s)        #Value in model1 = 5
 beamFWHM  = 180                  # Beam size (arcsec)          #Value in model1 = 60
-modname   = 'model3_35'            # Name of the model           
-noiserms  = 0.0015              # RMS noise in Jy/beam        #Value in model1 = 0.01
+modname   = 'lin_vdisp_180_test'            # Name of the model           
+noiserms  = 0.015              # RMS noise in Jy/beam        #Value in model1 = 0.01
 
 # This the main BBarolo executable
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
-ringfile = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/output/ngc2403/rings_final2.txt"
+ringfile = "/Users/blanca/Documents/TESIS/software/code/models/ngc2403_180/rings_final1.txt"
 t = Table.read(ringfile,format='ascii')
 
 
 # Basic parameters of the model
 radmax  = 1250                        #Value in model1 = 240
-radii   = np.arange(0,radmax,pixsize)
+radii   = np.arange(0,radmax,pixsize) #change this
+#print(len(radii))
 
 dens    = np.full(len(radii),1.) 
 #dens   = 50*np.exp(-radii/400-100/(0.5*radii+100))
@@ -33,20 +34,20 @@ dens_shape = "constant, value 1"
 
 vrot   = t['VROT(km/s)']
 #vrot    = 200 + 2./np.pi*200*np.arctan(2 *radii/270.)
-print(vrot)
+#print(vrot)
 
 #plt.plot(vrot)
 #plt.show()
-vrot_shape = "I did an arctan shape,  200 + 2./np.pi*400*np.arctan(radii/270.)"
+vrot_shape = "vrot of ngc2403 smoothed"
 
 vdisp   = np.linspace(30, 10, len(radii)).tolist()
 #vdisp   = np.full(len(radii),20.)         #Value in model1 = 10
 #vdisp    = 10 + 30*np.exp(-radii/180.)
 vdisp_shape = "linear decreasing from 30km/s to 10km/s"
-pa      = np.full(len(radii),124.147)       #Value in model1 = 30 # actual angle of ngc2405 is 123.7
-inc     = np.full(len(radii),35)         #Value in model1 = 60
+pa      = np.full(len(radii),123.7)       #Value in model1 = 30 # actual angle of ngc2405 is 123.7
+inc     = np.full(len(radii),70)         #Value in model1 = 60 value in ngc2403 62.9
 z0      = np.full(len(radii),0.)         #Value in model1 = 30
-vsys    = np.full(len(radii),134.109)       #Value in model1 = 30
+vsys    = np.full(len(radii),132.8)       #Value in model1 = 30
 
 # Below if we wanna define a warp or a flare (these are linear for example)
 #rstart = 150
@@ -71,7 +72,7 @@ s = SimulatedGalaxyCube(axisDim=[xysize, xysize, vsize],\
                         beam=beamFWHM/3600., bunit='JY/BEAM', obj=modname)
 
 # Setting up galaxy parameters (if parameters are not given, they are random!)
-s.define_galaxy(xpos=36.959, ypos=38.199, radii=radii,vsys=vsys,vdisp=vdisp,inc=inc,pa=pa,\
+s.define_galaxy(xpos=37, ypos=38, radii=radii,vsys=vsys,vdisp=vdisp,inc=inc,pa=pa,\
                 dens=dens,z0=z0,vrot=vrot,warpinc=False,warppa=False)
 print(s)
 
@@ -81,18 +82,18 @@ s.run(exe=BBmain,stdout='null',smooth=True,noise=noiserms) #HERE IS WHERE THE NO
 print (f"Done! ")
 
 # Cleaning working directory 
-if not os.path.isdir(f'models'): os.mkdir(f'models')
+if not os.path.isdir(f'models/{modname}'): os.mkdir(f'models/{modname}')
 mf = f'{modname}mod_noise.fits' if noiserms>0 else f'{modname}mod_nonorm.fits'
 subprocess.call([f'{BBmain}','--modhead',f'{modname}/{mf}','OBJECT',f'{modname}'],stdout=subprocess.DEVNULL)
-subprocess.call([f'mv',f'{modname}/{mf}',f'models/{modname}.fits'],stdout=subprocess.DEVNULL)
-subprocess.call([f'mv',f'{modname}/{modname}_params.txt',f'models/'],stdout=subprocess.DEVNULL)
+subprocess.call([f'mv',f'{modname}/{mf}',f'models/{modname}/{modname}.fits'],stdout=subprocess.DEVNULL)
+subprocess.call([f'mv',f'{modname}/{modname}_params.txt',f'models/{modname}/'],stdout=subprocess.DEVNULL)
 subprocess.call([f'rm','-rf',f'{modname}','emptycube.fits','galaxy_params.txt'],stdout=subprocess.DEVNULL)
 
 
 print (f"Model written in models/ directory. See you soon!")
  
 
-with open(os.path.join(f"models", f"{modname}_input.txt"), 'w') as file:
+with open(os.path.join(f"models/{modname}", f"{modname}_input.txt"), 'w') as file:
     file.write(f"Name of the model = {modname}\n")
     file.write("\n")
     file.write("CUBE PARAMETERS\n")
