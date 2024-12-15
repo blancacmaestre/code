@@ -25,8 +25,8 @@ t = Table.read(ringfile,format='ascii')
 
 
 # Basic parameters of the model
-radmax  = 1250                        #Value in model1 = 240
-radii   = np.arange(0,radmax,beamFWHM) #change this
+radmax  = 1300                        #Value in model1 = 240
+radii   = np.arange(180,radmax,beamFWHM) #change this
 print(len(radii))
 
 
