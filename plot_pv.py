@@ -11,6 +11,7 @@ from astropy.visualization import PowerStretch
 from astropy.visualization.mpl_normalize import ImageNormalize 
 from astropy.visualization import PercentileInterval 
 from pyBBarolo.wrapper import PVSlice
+from tools import getthevelocity, getthechannel
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
 #I NEED TO SEE WHAT THIS IS!!!!!
