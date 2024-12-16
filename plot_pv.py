@@ -25,29 +25,31 @@ plt.rcParams.update(params)
 #THIS PART IS ALL THE IMPUTS 
 
 #SLICES AND FITS FILE OF FITTING GALAXY
-major_GAL = "/Users/blanca/Documents/TESIS/software/code/models/lin_vdisp_360/slices/lin_vdisp_360pv_124.fits"
-minor_GAL = "/Users/blanca/Documents/TESIS/software/code/models/lin_vdisp_360/slices/lin_vdisp_360pv_214.fits"
-fits_GAL = "/Users/blanca/Documents/TESIS/software/code/models/lin_vdisp_360/lin_vdisp_360.fits"
+major_GAL = "/Users/blanca/Documents/TESIS/software/code/models/model1/model1pv_30.fits"
+minor_GAL = "/Users/blanca/Documents/TESIS/software/code/models/model1/model1pv_120.fits"
+fits_GAL = "/Users/blanca/Documents/TESIS/software/code/models/model1/model1.fits"
 
 #SLICES AND PARAMETERS OF MODEL
-major_MOD = '/Users/blanca/Documents/TESIS/software/code/TESTS/reso_tests/vdisp_lin_360_1_semifree/slices/barbamodelpv_124.fits' 
-minor_MOD = "/Users/blanca/Documents/TESIS/software/code/TESTS/reso_tests/vdisp_lin_360_1_semifree/slices/barbamodelpv_214.fits"
-model_par = "/Users/blanca/Documents/TESIS/software/code/TESTS/reso_tests/vdisp_lin_360_1/barbamodel/barbamodel_params.txt"
+major_MOD = '/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/barbamodelpv_30.fits' 
+minor_MOD = "/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/barbamodelpv_120.fits"
+model_par = "/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/barbamodel/barbamodel_params.txt"
 
 #SLICES OF MASK (PARAMETERS MATCH THAT OF THE GALAXY)
-major_MASK = '/Users/blanca/Documents/TESIS/software/code/TESTS/reso_tests/vdisp_lin_360_1_semifree/slices/lin_vdisp_360pv_124.fits' 
-minor_MASK = "/Users/blanca/Documents/TESIS/software/code/TESTS/reso_tests/vdisp_lin_360_1_semifree/slices/lin_vdisp_360pv_214.fits"
+major_MASK = '/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/model1pv_30.fits' 
+minor_MASK = "/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/model1pv_120.fits"
 
 #OUTPUT FILE AND NAME
-gname = 'lin_vdisp_360pv_124'
+gname = 'model1_enrico'
 outfile = f'{gname}_pv'
-outfolder = '/Users/blanca/Documents/TESIS/software/code/pv_plots/' 
+outfolder = '/Users/blanca/Documents/TESIS/software/code/pv_plot/' 
 
 #other parameters I need to make the plot
 plotmask = 0  
 zmin, zmax = 21, 106 #I NEED TO IND A WAY TO CALCULATE THIS, i guess these are the channels
 
-rad,vrot,inc,pa,vsys = np.genfromtxt(model_par,usecols=(0,1,4,5,10),unpack=True)  
+rad,vrot,inc,pa,vsys = np.genfromtxt(model_par,usecols=(0,1,4,5,10),unpack=True) 
+print(vrot[0])
+zmin, zmax = 21, 106
 
 GAL_maj     = fits.open(major_GAL) #this is the real stuff
 GAL_min     = fits.open(minor_GAL) 
@@ -82,8 +84,8 @@ norm = ImageNormalize(vmin=cont, vmax=vmax, stretch=PowerStretch(0.5))
 # I ALSO DO NOT HAVE VMIN AND VMAX
 
 radius = np.concatenate((rad,-rad)) 
-pa_av = 0.117532 #THIS HAS TO BE THE MAJOR AXIS PA
-pa_min = 90.1175 #MINOR AXIS PA
+pa_av = 30 #THIS HAS TO BE THE MAJOR AXIS PA
+pa_min = 30+90 #MINOR AXIS PA
 costh = np.cos(np.deg2rad(np.abs(pa-pa_av))) 
 vlos1 = vsys+vrot*np.sin(np.deg2rad(inc))*costh 
 vlos2 = vsys-vrot*np.sin(np.deg2rad(inc))*costh
@@ -137,7 +139,8 @@ for i in range (2):
 		axis2.plot(radius,vlos,'yo') 
 		axis.text(0, 1.1, gname, transform=axis.transAxes,fontsize=22) 
 
+
 image_mod_maj.close() 
 image_mod_min.close() 
-fig.savefig(outfolder+outfile+'.pdf', bbox_inches='tight') 
+fig.savefig(f"{outfolder}{outfile}.pdf", bbox_inches='tight') 
 
