@@ -27,7 +27,7 @@ def getthevelocity(cube_file,channel_index):
     CRVAL3 = header['CRVAL3']  
     CDELT3 = header['CDELT3']  
     CRPIX3 = header['CRPIX3']  
-    velocity = CRVAL3 + (channel_index - CRPIX3) * CDELT3
+    velocity = int(CRVAL3 + (channel_index - CRPIX3) * CDELT3)
     print(f"Velocity at channel {channel_index}: {velocity} km/s")
     return velocity
 
@@ -40,8 +40,8 @@ def getthechannel(cube_file,vel):
     crpix3 = header['CRPIX3']  
     crval3 = header['CRVAL3']  
     cdelt3 = header['CDELT3']  
-    channel = crpix3 + (vel - crval3) / cdelt3
+    channel = int(crpix3 + (vel - crval3) / cdelt3)
     print(f"The channel for velocity {vel} km/s is {channel}")
-    return vel
+    return channel
 
 ##########################################################################################################################################################

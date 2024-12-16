@@ -44,16 +44,16 @@ ringfiles = ["models/velcon_inc30/velcon_inc30_params.txt","models/velcon_inc30/
              "models/velcon_inc70/velcon_inc70_params.txt","models/velcon_inc70/velcon_inc70_params.txt",\
              "models/velcon_inc75/velcon_inc75_params.txt","models/velcon_inc75/velcon_inc75_params.txt"]
 
-outputfiles = ["velcon_inc30","velcon_inc30_biginc",\
-               "velcon_inc35","velcon_inc35_biginc",\
-               "velcon_inc40","velcon_inc40_biginc",\
-               "velcon_inc45","velcon_inc45_biginc",\
-               "velcon_inc50","velcon_inc50_biginc",\
-               "velcon_inc55","velcon_inc55_biginc",\
-               "velcon_inc60","velcon_inc60_biginc",\
-               "velcon_inc65","velcon_inc65_biginc",\
-               "velcon_inc70","velcon_inc70_biginc",\
-               "velcon_inc75","velcon_inc75_biginc"]
+outputfiles = ["TESTS/velcon_inc30","TESTS/velcon_inc30_biginc",\
+               "TESTS/velcon_inc35","TESTS/velcon_inc35_biginc",\
+               "TESTS/velcon_inc40","TESTS/velcon_inc40_biginc",\
+               "TESTS/velcon_inc45","TESTS/velcon_inc45_biginc",\
+               "TESTS/velcon_inc50","TESTS/velcon_inc50_biginc",\
+               "TESTS/velcon_inc55","TESTS/velcon_inc55_biginc",\
+               "TESTS/velcon_inc60","TESTS/velcon_inc60_biginc",\
+               "TESTS/velcon_inc65","TESTS/velcon_inc65_biginc",\
+               "TESTS/velcon_inc70","TESTS/velcon_inc70_biginc",\
+               "TESTS/velcon_inc75","TESTS/velcon_inc75_biginc"]
 
 inci = [30,30,35,35,40,40,45,45,50,50,55,55,60,60,65,65,70,70]
 inci_bound = [[10,50],[20,80],[15,55],[20,80],[20,60],[20,80],[25,65],[20,80],[30,70],[20,80],\

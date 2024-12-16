@@ -11,6 +11,8 @@ from astropy.visualization import PowerStretch
 from astropy.visualization.mpl_normalize import ImageNormalize 
 from astropy.visualization import PercentileInterval 
 from pyBBarolo.wrapper import PVSlice
+from astropy.stats import mad_std
+
 from tools import getthevelocity, getthechannel
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
@@ -34,6 +36,7 @@ fits_GAL = "/Users/blanca/Documents/TESIS/software/code/models/model1/model1.fit
 major_MOD = '/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/barbamodelpv_30.fits' 
 minor_MOD = "/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/barbamodelpv_120.fits"
 model_par = "/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/barbamodel/barbamodel_params.txt"
+fits_MOD = "/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/barbamodel/barbamodel.fits"
 
 #SLICES OF MASK (PARAMETERS MATCH THAT OF THE GALAXY)
 major_MASK = '/Users/blanca/Documents/TESIS/software/code/TESTS/model1_enrico/slices/model1pv_30.fits' 
@@ -44,16 +47,21 @@ gname = 'model1_enrico'
 outfile = f'{gname}_pv'
 outfolder = '/Users/blanca/Documents/TESIS/software/code/pv_plot/' 
 
-#other parameters I need to make the plot
 plotmask = 0  
-zmin, zmax = 21, 106 #I NEED TO IND A WAY TO CALCULATE THIS, i guess these are the channels
+
+#HERE I GET THE PARAMETERS OF MY MODEL
 
 rad,vrot,inc,pa,vsys = np.genfromtxt(model_par,usecols=(0,1,4,5,10),unpack=True) 
-print(vrot[0])
-zmin, zmax = 21, 106
+print(vrot)
 
-GAL_maj     = fits.open(major_GAL) #this is the real stuff
-GAL_min     = fits.open(minor_GAL) 
+zmin,zmax = 30,110
+#zmin = getthechannel(fits_MOD, vrot[0])-2
+#print("zmin is",zmin)
+#zmax = getthechannel(fits_MOD, vrot[len(vrot)-1])+5
+#print("zmax is",zmax)
+
+GAL_maj  = fits.open(major_GAL) #this is the real stuff
+GAL_min  = fits.open(minor_GAL) 
 MASK_maj = fits.open(major_MASK) 
 MASK_min = fits.open(minor_MASK) 
 
@@ -75,23 +83,25 @@ data_mas_maj = MASK_maj[0].data[zmin:zmax+1,int(xminpv[0]):int(xmaxpv[0])+1]
 data_mas_min = MASK_min[0].data[zmin:zmax+1,int(xminpv[1]):int(xmaxpv[1])+1] 
 xmin_wcs = ((xminpv+1-0.5-crpixpv)*cdeltpv+crvalpv)*3600
 xmax_wcs = ((xmaxpv+1+0.5-crpixpv)*cdeltpv+crvalpv)*3600
-zmin_wcs, zmax_wcs = -215, 215 #I NEED TO GET THIS S0MEHOW and this is the velocity?
-cont = 0.00259927 #ALSO THIS ONE
+zmin_wcs, zmax_wcs = getthevelocity(fits_MOD,zmin), getthevelocity(fits_MOD, zmax) #I NEED TO GET THIS S0MEHOW and this is the velocity?
+
+cont = np.std(fits_GAL)
+
 v = np.array([1,2,4,8,16,32,64])*cont 
 v_neg = [-cont] 
 interval = PercentileInterval(99.5) 
 vmax = interval.get_limits(data_maj)[1] 
 norm = ImageNormalize(vmin=cont, vmax=vmax, stretch=PowerStretch(0.5)) 
-# I ALSO DO NOT HAVE VMIN AND VMAX
+
 
 radius = np.concatenate((rad,-rad)) 
-pa_av = 30 #THIS HAS TO BE THE MAJOR AXIS PA
-pa_min = 30+90 #MINOR AXIS PA
+pa_av = np.mean(pa) 
+pa_min = np.mean(pa)+90 
 costh = np.cos(np.deg2rad(np.abs(pa-pa_av))) 
 vlos1 = vsys+vrot*np.sin(np.deg2rad(inc))*costh 
 vlos2 = vsys-vrot*np.sin(np.deg2rad(inc))*costh
 
-if 225>pa_av>=45: #this is changing velocities?
+if 225>pa_av>=45: 
 	vlos1, vlos2 = vlos2, vlos1 
 vlos = np.concatenate((vlos1,vlos2)) 
 vsys_m = np.nanmean(vsys) 
