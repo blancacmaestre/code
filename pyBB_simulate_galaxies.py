@@ -8,68 +8,64 @@ from pyBBarolo.utils import SimulatedGalaxyCube
 from astropy.table import Table 
 import matplotlib.pyplot as plt
 from pyBBarolo.wrapper import PVSlice
-
-# General parameters for datacube
-xysize, vsize = 51, 128 #75, 62        # Number of pixels/channels   #Value in model1 = 51,128
-pixsize   = 20#32                  # Size of pixels (arcsec)     #Value in model1 = 20
-chwidth   =  5#-5.12                  # Channel width (km/s)        #Value in model1 = 5
-beamFWHM  = 60                  # Beam size (arcsec)          #Value in model1 = 60
-modname   = 'velcon_inc75'            # Name of the model           
-noiserms  = 0.00015              # RMS noise in Jy/beam        #Value in model1 = 0.01
-
-# This the main BBarolo executable
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
-#ringfile = "/Users/blanca/Documents/TESIS/software/code/models/ngc2403_180/rings_final1.txt"
-#t = Table.read(ringfile,format='ascii')
+# General parameters for datacube
+xysize, vsize = 51,128   # Number of pixels/channels   #Value in model1 = 51,128  #value in ngc2403 75, 62
+pixsize   = 20   # Size of pixels (arcsec)             #Value in model1 = 20      #value in ngc2403 32 
+chwidth   =  5   # Channel width (km/s)                #Value in model1 = 5       #value in ngc2403 -5.12 
+beamFWHM  = 60   # Beam size (arcsec)                  #Value in model1 = 60      #value in ngc2403 180 or 360
+modname   = 'velset_inc75'   # Name of the model           
+noiserms  = 0.001   # RMS noise in Jy/beam            #Value in model1 = 0.01     #value in ngc2403 0.0015
 
+
+ringfile = "/Users/blanca/Documents/TESIS/software/code/models/ngc2403_180/rings_final1.txt"
+t = Table.read(ringfile,format='ascii')
 
 # Basic parameters of the model
-radmax  = 500                        #Value in model1 = 240
+radmax  = 300   #Value in model1 = 240
 radii   = np.arange(0,radmax,pixsize) 
-#when i am using the data from another galaxy i needto match this to that, but when i am creating a model i can put from 0 and say that the jump is pxsize
-print(len(radii))
+#when i am using the data from another galaxy i needto match this to the data 
+#when i am creating a model i can put from 0 and say that the jump is pxsize
 
-
-dens    = np.full(len(radii),1.) 
-#dens   = 50*np.exp(-radii/400-100/(0.5*radii+100))
-dens_shape = "constant, value 1"
+#dens    = np.full(len(radii),1.)
+#dens_shape = "constant at 1"
+dens   = 50*np.exp(-radii/400-100/(0.5*radii+100))
+dens_shape = "enrico"
 
 #vrot   = t['VROT(km/s)']
-vrot   = np.full(len(radii),200.)
-#vrot    = 200 + 2./np.pi*200*np.arctan(2 *radii/270.)
-print(len(vrot))
-
-#plt.plot(vrot)
-#plt.show()
-vrot_shape = "constant at 200km/s"
+#vrot_shape = "ngc 2403"
+#vrot   = np.full(len(radii),200.)
+vrot = np.linspace(100, 250, len(radii)).tolist()
+vrot_shape = "linearly decreasing from 200km/s to 100km/s"
+#vrot    = 200 + 2./np.pi*200*np.arctan(2 *radii/270.) #this is the value of model1
+#vrot_shape = "arctan (enrico)"
 
 #vdisp   = np.linspace(30, 10, len(radii)).tolist()
-vdisp   = np.full(len(radii),30.)         #Value in model1 = 10
+vdisp   = np.full(len(radii),20.)        #Value in model1 = 10
 #vdisp    = 10 + 30*np.exp(-radii/180.)
-vdisp_shape = "constant at 30km/s"
-pa      = np.full(len(radii),100)       #Value in model1 = 30 # actual angle of ngc2405 is 123.7
-inc     = np.full(len(radii),75)         #Value in model1 = 60 value in ngc2403 62.9
-z0      = np.full(len(radii),0.)         #Value in model1 = 30
-vsys    = np.full(len(radii),20)       #Value in model1 = 0
+vdisp_shape = "constant at 20km/s"
+
+pa   = np.full(len(radii),80)       #Value in model1 = 30 # actual angle of ngc2405 is 123.7
+inc  = np.full(len(radii),75)         #Value in model1 = 60 value in ngc2403 62.9
+z0   = np.full(len(radii),0)         #Value in model1 = 30
+vsys = np.full(len(radii),30)       #Value in model1 = 0  value in ngc2403 132.8
 xpos = 25.5
 ypos = 25.5
+
 # Below if we wanna define a warp or a flare (these are linear for example)
 #rstart = 150
 #pa[radii>rstart] = -(radii[radii>rstart]-rstart)/20.+pa[0]
 #inc[radii>rstart] = -(radii[radii>rstart]-rstart)/80.+inc[0]
 #z0[radii>rstart] = (radii[radii>rstart]-rstart)/4. + z0[0]
-#,BPA= -79.4
-# Initializing a SimulatedGalaxyCube instanceç
+#BPA= -79.4
 
-#s = SimulatedGalaxyCube(axisDim=[xysize, xysize, vsize],\
-#                        cdelts=[-pixsize/3600., pixsize/3600., chwidth],\
-#                        beam=beamFWHM/3600., bunit='JY/BEAM', obj=modname)
+# Initializing a SimulatedGalaxyCube instance
+
 #crpixs=[38.,38., 1]
 #crvals=[114.22, 65.58, 289.61]
 
 #This is the base datacube GALMOD needs
-
 s = SimulatedGalaxyCube(axisDim=[xysize, xysize, vsize],\
                         cdelts=[-pixsize/3600., pixsize/3600., chwidth],\
                         #crpixs=crpixs,\
@@ -84,6 +80,7 @@ print(s)
 # Running BB and creating a model
 print (f"Simulating {modname}...",flush=True,end='')
 s.run(exe=BBmain,stdout='null',smooth=True,noise=noiserms) #HERE IS WHERE THE NOISE IS ADDED
+#this is where the galaxy is actually created
 print (f"Done! ")
 
 # Cleaning working directory 

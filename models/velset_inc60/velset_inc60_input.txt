@@ -1,0 +1,31 @@
+Name of the model = velset_inc60
+
+CUBE PARAMETERS
+
+Number of pixels in x/y = 51
+Size of pixels (arcsec)= 20
+Number of channels = 128
+Channel width = 5
+Beam width = 60
+RMS noise in Jy/beam = 0.001
+xpos and ypos = 25.5,25.5
+
+GALAXY PARAMETERS
+
+Maximum radius of galaxy = 300
+Beam width = 60
+Number of radii = 15
+Density profile initial value = 18.393972058572118
+Density ptofile shape = enrico
+
+VELOCITIES
+Rotational velocity initial value = 100.0
+Rotational velocity shape = linearly decreasing from 200km/s to 100km/s
+Velocity dispersion initial value= 20.0
+Velocity dispersion shape = constant at 20km/s
+
+GEOMETRY
+Position angle = 80
+Inclination = 60
+Thickness = 0
+Systemic velocity (km/s) = 30

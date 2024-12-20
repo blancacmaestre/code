@@ -7,7 +7,8 @@ Size of pixels (arcsec)= 32
 Number of channels = 62
 Channel width = -5.12
 Beam width = 180
-RMS noise in Jy/beam = 0.015
+RMS noise in Jy/beam = 0.0015
+xpos and ypos = 37,38
 crvals = [114.22, 65.58, 289.61]
 crpixs = [38.0, 38.0, 1]
 
@@ -21,12 +22,12 @@ Density ptofile shape = constant, value 1
 
 VELOCITIES
 Rotational velocity initial value = 86.582
-Rotational velocity shape = vrot of ngc2403 smoothed 180
+Rotational velocity shape = ngc2403
 Velocity dispersion initial value= 20.0
 Velocity dispersion shape = constant at 20km/s
 
 GEOMETRY
 Position angle = 123.7
 Inclination = 62.9
-Thickness = 0.0
+Thickness = 0
 Systemic velocity (km/s) = 132.8
