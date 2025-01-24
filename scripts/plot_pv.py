@@ -13,7 +13,7 @@ from astropy.visualization import PercentileInterval
 from pyBBarolo.wrapper import PVSlice
 from astropy.stats import mad_std
 
-from tools import getthevelocity, getthechannel
+from scripts.tools import getthevelocity, getthechannel
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo"
 
 #I NEED TO SEE WHAT THIS IS!!!!!
