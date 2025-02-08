@@ -54,7 +54,7 @@ plotmask = 0
 rad,vrot,inc,pa,vsys = np.genfromtxt(model_par,usecols=(0,1,4,5,10),unpack=True) 
 print(vrot)
 
-zmin,zmax = 30,110
+zmin,zmax = 30,100
 #zmin = getthechannel(fits_MOD, vrot[0])-2
 #print("zmin is",zmin)
 #zmax = getthechannel(fits_MOD, vrot[len(vrot)-1])+5
