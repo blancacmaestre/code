@@ -1,0 +1,32 @@
+Name of the model = benchmark_galaxy
+
+CUBE PARAMETERS
+
+Number of pixels in x/y = 51
+Size of pixels (arcsec)= 20
+Number of channels = 64
+Channel width = 10
+Beam width = 60
+RMS noise in Jy/beam = 0.001
+xpos and ypos = 25.5,25.5
+
+GALAXY PARAMETERS
+
+SNR = 10.535085666375082
+Maximum radius of galaxy = 300
+Beam width = 60
+Number of radii = 15
+Density profile initial value = 12.130613194252668
+Density ptofile shape = exponential
+
+VELOCITIES
+Rotational velocity initial value = 0.0
+Rotational velocity shape = arctan
+Velocity dispersion initial value= 20.0
+Velocity dispersion shape = exponential
+
+GEOMETRY
+Position angle = 0
+Inclination = 45
+Thickness = 10
+Systemic velocity (km/s) = 0

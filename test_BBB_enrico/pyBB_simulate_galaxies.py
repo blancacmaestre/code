@@ -11,11 +11,11 @@ xysize, vsize = 51, 64          # Number of pixels/channels
 pixsize   = 20                  # Size of pixels (arcsec)
 chwidth   = 10                  # Channel width (km/s)
 beamFWHM  = 60                  # Beam size (arcsec)
-modname   = 'model4'            # Name of the model
+modname   = 'model5'            # Name of the model
 noiserms  = 0.01                # RMS noise in Jy/beam
 
 # This the main BBarolo executable
-BBmain = "/Users/edt/Dropbox/Codex/BBarolo/BBarolo"
+BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo/BBarolo"
 
 # Basic parameters of the model
 radmax  = 240
