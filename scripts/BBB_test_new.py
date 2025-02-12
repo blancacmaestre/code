@@ -116,7 +116,7 @@ class BayesianBBaroloMod(BayesianBBarolo):
         #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
 
         #Option C Standard Gaussian residuals: cube noise,
-        #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
+        res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
 
         #Option D Gaussian residuals: no noise
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)

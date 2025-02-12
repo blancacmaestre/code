@@ -4,8 +4,8 @@ unset key
 set size 0.60, 1
 set style line 1 lc rgb '#B22222' lt 9 pt 7 lw 1
 set macros
-XTICS   = 'set xtics 90.000000; set mxtics 2; set format x "%g" '
-NOXTICS = 'unset xlabel; set xtics  90.000000; set mxtics 2; set format x '' '
+XTICS   = 'set xtics 60.000000; set mxtics 2; set format x "%g" '
+NOXTICS = 'unset xlabel; set xtics  60.000000; set mxtics 2; set format x '' '
 LABELF  = 'set xlabel font "Helvetica,13"; set ylabel font "Helvetica,13" '
 TICSF   = 'set xtics font "Helvetica,12"; set ytics font "Helvetica,12" '
 TMARGIN = 'set tmargin at screen 0.95; set bmargin at screen 0.47; set lmargin at screen 0.10; set rmargin at screen 0.50'
@@ -16,7 +16,7 @@ set multiplot layout 3,1 rowsfirst
 @TICSF
 @TMARGIN
 @NOXTICS
-set yrange [-5:137.34]
+set yrange [-5:138.244]
 set ylabel 'V_c  [km/s]'
 set ytics 50
 set mytics 5
@@ -24,7 +24,7 @@ plot '/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res//model4_C_1/ri
 set title ''
 @MMARGIN
 @NOXTICS
-set yrange [44.9171:54.8987]
+set yrange [45.0359:55.0438]
 set ylabel 'i [deg]'
 set ytics 5
 set mytics 5
@@ -32,7 +32,7 @@ plot '/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res//model4_C_1/ri
 @BMARGIN
 @XTICS
 set xlabel 'Radius [arcsec]'
-set yrange [0.0668778:0.0817396]
+set yrange [-0.0622013:-0.0760238]
 set ylabel 'P.A. [deg]'
 set ytics 5
 set mytics 5
@@ -52,7 +52,7 @@ set multiplot layout 3,1 rowsfirst
 @TICSF
 @TMARGIN
 @NOXTICS
-set yrange [0:22.8523]
+set yrange [0:22.8103]
 set ylabel '{/Symbol s} [km/s]'
 set ytics 5
 set mytics 5
