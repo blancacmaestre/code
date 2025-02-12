@@ -172,3 +172,37 @@ def plot_PV(fname1, fname2, ringfile1, ringfile2, output):
 
     plt.savefig(f'{output}PV_plot.png')
     plt.show()
+
+    ##########################################################################################################################################################
+def add_channels(fname, k_min=0, k_max=len(fits.getdata(fname))):
+    head = fits.getheader(fname)
+    image = fits.getdata(fname) #numpy array, my data
+    print("original shape of cube:" , image.shape)
+    # row number is y coordinate so it is (rows, columns), (y,x) this is for a 2d one, but if i take a 3d? (z,y,x)
+
+    all_channels = np.zeros((image.shape[1], image.shape[2]))
+    choose_channels = np.zeros((image.shape[1], image.shape[2]))
+
+    for k in range(image.shape[0]):
+        all_channels = image[k] + all_channels
+        if k_min < k < k_max:
+            choose_channels = image[k] + choose_channels
+
+    mean1, meadian1, std1 = sigma_clipped_stats(all_channels, sigma=2.0)
+    mean2, meadian2, std2 = sigma_clipped_stats(choose_channels, sigma=2.0)
+
+    plt.rcParams['figure.figsize'] = [10, 5]
+
+    fig, axs = plt.subplots(1, 2)
+
+    cont_level_all = [std1 * x for x in [-1, 1, 2, 4, 8, 16, 32, 64]]
+    cax0 = axs[0].contour(all_channels, levels=cont_level_all, cmap='viridis')
+    axs[0].imshow(all_channels, cmap="Greys", origin="lower")
+    axs[0].set_title('All Channels')
+
+    cont_level_choose = [std2 * x for x in [-1, 1, 2, 4, 8, 16, 32, 64]]
+    cax1 = axs[1].contour(choose_channels, levels=cont_level_choose, cmap='viridis')
+    axs[1].imshow(choose_channels, cmap="Greys", origin="lower")
+    axs[1].set_title(f'Chosen Channels ({k_min} < k < {k_max})')
+
+    plt.show()

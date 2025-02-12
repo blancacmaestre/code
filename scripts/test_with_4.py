@@ -34,9 +34,9 @@ def res_Gaussian(data,model,noise,mask,multiplier=1):
     Gaussian residuals with noise
     """
 
-    data *= mask
-    model = my_norm(model,data)
-    res = np.nansum((data-model)**2)
+    data *= mask #we mask the data
+    model = my_norm(model,data) #we normalize the model with the data
+    res = np.nansum((data-model)**2) #we calculate the residuals 
 
     return multiplier*res/(noise*noise)
 
@@ -48,6 +48,7 @@ def res_abs(data,model,noise,mask,multiplier=1):
     data *= mask
     model = my_norm(model,data)
     res = np.nansum(np.abs(data-model))
+    
 
     return multiplier*res/noise
 
@@ -130,19 +131,19 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
 
 # Name of the FITS file to be fitted
-model = "model4_D_2"
+model = "model4_D_small"
 threads = 8
 fitsname = f"/Users/blanca/Documents/TESIS/software/THESIS/test_BBB_enrico/models/model4.fits"
-freepar = ['vrot','vdisp','inc_single','phi_single']
+#freepar = ['vrot','vdisp','inc_single','phi_single']
 #Uncomment to fit the density
-#freepar = ['vrot','vdisp','dens','inc_single','phi_single']
+freepar = ['vrot','vdisp','dens','inc_single','phi_single']
 output = "/Users/blanca/Documents/TESIS/software/THESIS/scripts/output/"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
 
 # Initializing rings. 
-f3d.init(radii=np.arange(30,240,60),xpos=25.5,ypos=25.5,vsys=0.0,\
+f3d.init(radii=np.arange(30,240,90),xpos=25.5,ypos=25.5,vsys=0.0,\
          vrot=100,vdisp=10,vrad=0,z0=30,inc=60,phi=0)
 
 # Here it is possible to give any other BBarolo parameter, for example to control
@@ -154,7 +155,7 @@ f3d.set_options(mask="SEARCH",linear=0,outfolder=f"{output}/{model}",plotmask=Tr
 f3d.show_options()
 
 # Default priors are uniform and the default boundaries for the fit are in f3d.bounds.
-f3d.bounds['vrot']  = [0,250]
+""" f3d.bounds['vrot']  = [0,250]
 f3d.bounds['vdisp'] = [1,40]
 f3d.bounds['inc']   = [20,80]
 f3d.bounds['phi']   = [-20,20]
@@ -162,7 +163,17 @@ f3d.bounds['z0']    = [0,60]
 f3d.bounds['xpos']  = [20,30]
 f3d.bounds['ypos']  = [20,30]
 f3d.bounds['vsys']  = [-20,20]
-f3d.bounds['dens']  = [1,30]
+f3d.bounds['dens']  = [1,30] """
+
+f3d.bounds['vrot']  = [50,150]
+f3d.bounds['vdisp'] = [1,20]
+f3d.bounds['inc']   = [50,80]
+f3d.bounds['phi']   = [-20,20]
+f3d.bounds['z0']    = [0,60]
+f3d.bounds['xpos']  = [20,30]
+f3d.bounds['ypos']  = [20,30]
+f3d.bounds['vsys']  = [-20,20]
+f3d.bounds['dens']  = [1,20]
 
 
 # Keywords to be passed to the sample run
