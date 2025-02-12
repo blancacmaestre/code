@@ -45,14 +45,11 @@ def res_abs(data,model,noise,mask,multiplier=1):
     Use absolute difference
     """
     
-    data *= mask
-    model = my_norm(model,data)
-    res = np.nansum(np.abs(data-model))
+    data *= mask #we mask the data
+    model = my_norm(model,data) #we normalize the model with the data
+    res = np.nansum(np.abs(data-model)) #we calculate the residuals
     
-
     return multiplier*res/noise
-
-
 
 
 
@@ -108,7 +105,7 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
     #Uncomment
     #Gaussian 
-    def _calculate_residuals(self,model,data,mask=None):
+    #def _calculate_residuals(self,model,data,mask=None):
         
         #Option A: Standard absolute residuals: no noise, residual muplitied by 1000 as done before
         #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
@@ -131,13 +128,13 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
 
 # Name of the FITS file to be fitted
-model = "model4_D_small"
+model = "model4_O_4"
 threads = 8
-fitsname = f"/Users/blanca/Documents/TESIS/software/THESIS/test_BBB_enrico/models/model4.fits"
-#freepar = ['vrot','vdisp','inc_single','phi_single']
+fitsname = f"/Users/blanca/Documents/TESIS/software/THESIS/models/model4/model4.fits"
+freepar = ['vrot','vdisp','inc_single','phi_single']
 #Uncomment to fit the density
-freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/Users/blanca/Documents/TESIS/software/THESIS/scripts/output/"
+#freepar = ['vrot','vdisp','dens','inc_single','phi_single']
+output = "/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res/"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
@@ -155,7 +152,7 @@ f3d.set_options(mask="SEARCH",linear=0,outfolder=f"{output}/{model}",plotmask=Tr
 f3d.show_options()
 
 # Default priors are uniform and the default boundaries for the fit are in f3d.bounds.
-""" f3d.bounds['vrot']  = [0,250]
+f3d.bounds['vrot']  = [0,250]
 f3d.bounds['vdisp'] = [1,40]
 f3d.bounds['inc']   = [20,80]
 f3d.bounds['phi']   = [-20,20]
@@ -163,9 +160,9 @@ f3d.bounds['z0']    = [0,60]
 f3d.bounds['xpos']  = [20,30]
 f3d.bounds['ypos']  = [20,30]
 f3d.bounds['vsys']  = [-20,20]
-f3d.bounds['dens']  = [1,30] """
+f3d.bounds['dens']  = [1,30]
 
-f3d.bounds['vrot']  = [50,150]
+""" f3d.bounds['vrot']  = [50,200]
 f3d.bounds['vdisp'] = [1,20]
 f3d.bounds['inc']   = [50,80]
 f3d.bounds['phi']   = [-20,20]
@@ -173,7 +170,7 @@ f3d.bounds['z0']    = [0,60]
 f3d.bounds['xpos']  = [20,30]
 f3d.bounds['ypos']  = [20,30]
 f3d.bounds['vsys']  = [-20,20]
-f3d.bounds['dens']  = [1,20]
+f3d.bounds['dens']  = [1,20] """
 
 
 # Keywords to be passed to the sample run
@@ -198,7 +195,7 @@ quantiles = [0.16,0.50,0.84]
 cfig, caxes = dyplot.cornerplot(f3d.results,show_titles=True,title_quantiles=quantiles,
                                 quantiles=quantiles, color='blue',max_n_ticks=5, \
                                 labels=f3d.freepar_names, label_kwargs=dict(fontsize=20))
-cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight')
+cfig.savefig(f'{output}{model}/{model}_corner.pdf',bbox_inches='tight')
 
 # Saving samples
-np.save("dynesty_samples.npy", f3d.results.samples)
+np.save(f"{output}{model}/dynesty_samples.npy", f3d.results.samples)
