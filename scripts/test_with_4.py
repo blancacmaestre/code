@@ -105,7 +105,7 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
     #Uncomment
     #Gaussian 
-    #def _calculate_residuals(self,model,data,mask=None):
+    def _calculate_residuals(self,model,data,mask=None):
         
         #Option A: Standard absolute residuals: no noise, residual muplitied by 1000 as done before
         #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
@@ -128,7 +128,7 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
 
 # Name of the FITS file to be fitted
-model = "model4_O_4"
+model = "model4_C_2"
 threads = 8
 fitsname = f"/Users/blanca/Documents/TESIS/software/THESIS/models/model4/model4.fits"
 freepar = ['vrot','vdisp','inc_single','phi_single']
@@ -140,7 +140,7 @@ output = "/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res/"
 f3d = BayesianBBaroloMod(fitsname)
 
 # Initializing rings. 
-f3d.init(radii=np.arange(30,240,90),xpos=25.5,ypos=25.5,vsys=0.0,\
+f3d.init(radii=np.arange(30,240,60),xpos=25.5,ypos=25.5,vsys=0.0,\
          vrot=100,vdisp=10,vrad=0,z0=30,inc=60,phi=0)
 
 # Here it is possible to give any other BBarolo parameter, for example to control
