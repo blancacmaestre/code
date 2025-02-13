@@ -29,4 +29,4 @@ for i in range(len(vrots)):
     mask = masks[i]
     model = models[i]
     print(f"Running BBB_template with vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, fitting: {fitting}, mask: {mask}, model: {model}")
-    subprocess.run(['python', '/Users/blanca/Documents/TESIS/software/THESIS/scripts/BBB_template.py', '--vrot', str(vrot), '--vdisp', str(vdisp), '--inc', str(inc), '--phi', str(phi), '--dens', str(dens), '--fitting', ','.join(fitting), '--mask', mask, '--model', model])
+    subprocess.run(['python', '/home/user/THESIS/scripts/BBB_test_new.py', '--vrot', str(vrot), '--vdisp', str(vdisp), '--inc', str(inc), '--phi', str(phi), '--dens', str(dens), '--fitting', ','.join(fitting), '--mask', mask, '--model', model])

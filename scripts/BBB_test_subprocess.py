@@ -159,11 +159,11 @@ print(f"vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, fitt
 # Name of the FITS file to be fitted
 model = model
 threads = 8
-fitsname = f"/Users/blanca/Documents/TESIS/software/THESIS/test_BBB_enrico/models/model4.fits"
+fitsname = f"/home/user/THESIS/models/model4/model4.fits"
 #freepar = [['vrot','vdisp','inc_single','phi_single'],['vrot','vdisp','dens','inc_single','phi_single']]
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/Users/blanca/Documents/TESIS/software/THESIS/scripts/output/"
+output = "/home/user/THESIS/scripts/testing_in_container"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
@@ -214,12 +214,12 @@ quantiles = [0.16,0.50,0.84]
 cfig, caxes = dyplot.cornerplot(f3d.results,show_titles=True,title_quantiles=quantiles,
                                 quantiles=quantiles, color='blue',max_n_ticks=5, \
                                 labels=f3d.freepar_names, label_kwargs=dict(fontsize=20))
-cfig.savefig(f'{output}{model}/{model}_corner.pdf',bbox_inches='tight')
+cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight')
 
 # Saving samples
-np.save(f"{output}{model}/dynesty_samples.npy", f3d.results.samples)
-np.save(f"{output}{model}/best_model.npy", f3d.write_bestmodel())
-np.save (f"{output}{model}/dynesty_stats.npy",f3d.print_stats())
+np.save(f"{output}/{model}/dynesty_samples.npy", f3d.results.samples)
+np.save(f"{output}/{model}/best_model.npy", f3d.write_bestmodel())
+np.save (f"{output}/{model}/dynesty_stats.npy",f3d.print_stats())
 
 ################################################################################################################
 #HOW I HAVE TO CREATE THE GALAXY FOR THE BEST MODEL
