@@ -62,8 +62,8 @@ vmax = interval.get_limits(data_maj)[1]
 norm = ImageNormalize(vmin=cont, vmax=vmax, stretch=PowerStretch(0.5)) 
 
 radius = np.concatenate((rad,-rad)) 
-pamaj_av = -0.0559723
-pamin_av = 89.944
+pamaj_av = 0.38574
+pamin_av = 90.3857
 costh = np.cos(np.deg2rad(np.abs(pa-pamaj_av))) 
 vlos1 = vsys+vrot*np.sin(np.deg2rad(inc))*costh 
 vlos2 = vsys-vrot*np.sin(np.deg2rad(inc))*costh 

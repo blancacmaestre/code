@@ -16,7 +16,7 @@ set multiplot layout 3,1 rowsfirst
 @TICSF
 @TMARGIN
 @NOXTICS
-set yrange [-5:142.058]
+set yrange [-5:138.755]
 set ylabel 'V_c  [km/s]'
 set ytics 50
 set mytics 5
@@ -24,7 +24,7 @@ plot '/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res/model4_C_new_2
 set title ''
 @MMARGIN
 @NOXTICS
-set yrange [45.5576:55.6815]
+set yrange [44.8222:54.7826]
 set ylabel 'i [deg]'
 set ytics 5
 set mytics 5
@@ -32,7 +32,7 @@ plot '/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res/model4_C_new_2
 @BMARGIN
 @XTICS
 set xlabel 'Radius [arcsec]'
-set yrange [-0.050375:-0.0615695]
+set yrange [0.347166:0.424314]
 set ylabel 'P.A. [deg]'
 set ytics 5
 set mytics 5
@@ -52,7 +52,7 @@ set multiplot layout 3,1 rowsfirst
 @TICSF
 @TMARGIN
 @NOXTICS
-set yrange [0:23.0889]
+set yrange [0:23.0173]
 set ylabel '{/Symbol s} [km/s]'
 set ytics 5
 set mytics 5
