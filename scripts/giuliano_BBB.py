@@ -3,7 +3,7 @@
 # This way, we can override any other installed version and 
 # modify pyBBarolo without the need of reinstalling it every time
 import sys
-sys.path.insert(0,'/Users/blanca/Documents/TESIS/software/Bbarolo')
+sys.path.insert(0,'/Users/blanca/Documents/TESIS/software/Bbarolo/BBarolo')
 
 # This should give version 1.3.3dev!
 from pyBBarolo import version
@@ -139,13 +139,12 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
 
 # Name of the FITS file to be fitted
-model = "model4_C_new_2"
-fitsname = f"/Users/blanca/Documents/TESIS/software/THESIS/models/model4/model4.fits"
+model = "testing_stuff"
+fitsname = f"/home/user/THESIS/models/model4/model4.fits"
 freepar = ['vrot','vdisp','inc_single','phi_single']
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/Users/blanca/Documents/TESIS/software/THESIS/tests_new_res"
-
+output = "/home/user/THESIS/tests_new_res"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)

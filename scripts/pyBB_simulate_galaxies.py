@@ -8,7 +8,7 @@ from pyBBarolo.utils import SimulatedGalaxyCube
 from astropy.table import Table 
 import matplotlib.pyplot as plt
 from pyBBarolo.wrapper import PVSlice
-from scripts.tools import calculate_SNR
+from tools import calculate_SNR
 
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo/BBarolo"
 output = "/Users/blanca/Documents/TESIS/software/THESIS/"
@@ -18,7 +18,7 @@ xysize, vsize = 51,64   # Number of pixels/channels   #Value in model1 = 51,128 
 pixsize   = 20   # Size of pixels (arcsec)             #Value in model1 = 20      #value in ngc2403 32 
 chwidth   =  10   # Channel width (km/s)                #Value in model1 = 5       #value in ngc2403 -5.12 
 beamFWHM  = 60   # Beam size (arcsec)                  #Value in model1 = 60      #value in ngc2403 180 or 360
-modname   = 'benchmark_galaxy'   # Name of the model           
+modname   = 'test'   # Name of the model           
 noiserms  = 0.001   # RMS noise in Jy/beam            #Value in model1 = 0.01     #value in ngc2403 0.0015
 
 # Basic parameters of the model
