@@ -164,7 +164,7 @@ fitsname = f"/home/user/THESIS/models/model4/model4.fits"
 #freepar = [['vrot','vdisp','inc_single','phi_single'],['vrot','vdisp','dens','inc_single','phi_single']]
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/scripts/testing_in_container"
+output = "/home/user/THESIS/testing_in_container"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
