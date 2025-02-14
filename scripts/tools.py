@@ -5,7 +5,7 @@ from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
-from spectral_cube import SpectralCube as SC
+#from spectral_cube import SpectralCube as SC
 from astropy import wcs
 from astropy import units as u
 import numpy.ma as ma
@@ -136,10 +136,10 @@ def plot_PV(fname1, fname2, ringfile1, ringfile2, output):
     m_head = fits.open(fname2)
     name2 = m_head[0].header["OBJECT"]
 
-    im_cube_maj = fits.getdata(f'{output}{name1}pv_{int(np.mean(c['PA']))}.fits')
-    im_cube_min = fits.getdata(f'{output}{name1}pv_{int(np.mean(c['PA'])+90)}.fits')
-    im_model_maj = fits.getdata(f'{output}{name2}pv_{int(np.mean(c['PA']))}.fits')
-    im_model_min = fits.getdata(f'{output}{name2}pv_{int(np.mean(c['PA'])+90)}.fits')
+    im_cube_maj = fits.getdata(f'{output}{name1}pv_{int(np.mean(c["PA"]))}.fits')
+    im_cube_min = fits.getdata(f'{output}{name1}pv_{int(np.mean(c["PA"])+90)}.fits')
+    im_model_maj = fits.getdata(f'{output}{name2}pv_{int(np.mean(c["PA"]))}.fits')
+    im_model_min = fits.getdata(f'{output}{name2}pv_{int(np.mean(c["PA"])+90)}.fits')
 
     fig, axs = plt.subplots(1, 2, figsize=(15, 12))
     mean1, meadian1, std1 = sigma_clipped_stats(im_cube_maj, sigma=5.0)
@@ -174,7 +174,7 @@ def plot_PV(fname1, fname2, ringfile1, ringfile2, output):
     plt.show()
 
     ##########################################################################################################################################################
-def add_channels(fname, k_min=0, k_max=len(fits.getdata(fname))):
+def add_channels(fname, k_min=0, k_max=10):
     head = fits.getheader(fname)
     image = fits.getdata(fname) #numpy array, my data
     print("original shape of cube:" , image.shape)

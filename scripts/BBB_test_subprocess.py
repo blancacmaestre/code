@@ -108,7 +108,7 @@ class BayesianBBaroloMod(BayesianBBarolo):
     #Uncomment
     #Gaussian 
     def _calculate_residuals(self,model,data,mask=None):
-        
+
         #Option A: Standard absolute residuals: no noise, residual muplitied by 1000 as done before
         #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
@@ -116,24 +116,24 @@ class BayesianBBaroloMod(BayesianBBarolo):
         #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
 
         #Option C Standard Gaussian residuals: cube noise,
-        res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
-
+        #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
+        
         #Option D Gaussian residuals: no noise
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
-
+        
         #Option E Gaussian residuals: no noise, multiplied by 1000
-        #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1000)
-
+        res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1000)
+         
 
         return res
     
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Process some parameters.')
-parser.add_argument('--vrot', type=str, required=True, help='Vrot parameter')
-parser.add_argument('--vdisp', type=str, required=True, help='Vdisp parameter')
-parser.add_argument('--inc', type=str, required=True, help='Inc parameter')
-parser.add_argument('--phi', type=str, required=True, help='Phi parameter')
-parser.add_argument('--dens', type=str, required=True, help='Dens parameter')
+#parser.add_argument('--vrot', type=str, required=True, help='Vrot parameter')
+#parser.add_argument('--vdisp', type=str, required=True, help='Vdisp parameter')
+#parser.add_argument('--inc', type=str, required=True, help='Inc parameter')
+#parser.add_argument('--phi', type=str, required=True, help='Phi parameter')
+#parser.add_argument('--dens', type=str, required=True, help='Dens parameter')
 parser.add_argument('--fitting', type=str, required=True, help='Freepar parameter')
 parser.add_argument('--mask', type=str, required=True, help='Mask parameter')
 parser.add_argument('--model', type=str, required=True, help='Model parameter')
@@ -142,17 +142,18 @@ parser.add_argument('--model', type=str, required=True, help='Model parameter')
 args = parser.parse_args()
 
 # Convert string arguments to numerical types
-vrot = eval(args.vrot)
+""" vrot = eval(args.vrot)
 vdisp = eval(args.vdisp)
 inc = eval(args.inc)
 phi = eval(args.phi)
-dens = eval(args.dens)
+dens = eval(args.dens) """
 fitting = args.fitting.split(',')  # Convert comma-separated string back to list
 mask = args.mask
 model = args.model
 
 # Print the arguments to verify
-print(f"vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, fitting: {fitting}, mask: {mask}, model: {model}")
+print(f"fitting: {fitting}, mask: {mask}, model: {model}")
+#vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, 
 
 # Your existing code here
 
@@ -181,7 +182,7 @@ f3d.set_options(mask=mask,linear=0,outfolder=f"{output}/{model}",plotmask=True)
 f3d.show_options()
 
 # Default priors are uniform and the default boundaries for the fit are in f3d.bounds.
-f3d.bounds['vrot']  = vrot
+""" f3d.bounds['vrot']  = vrot
 f3d.bounds['vdisp'] = vdisp
 f3d.bounds['inc']   = inc
 f3d.bounds['phi']   = phi
@@ -189,7 +190,7 @@ f3d.bounds['z0']    = [0,40]
 f3d.bounds['xpos']  = [20,30]
 f3d.bounds['ypos']  = [20,30]
 f3d.bounds['vsys']  = [-20,20]
-f3d.bounds['dens']  = dens
+f3d.bounds['dens']  = dens """
 
 
 # Keywords to be passed to the sample run
@@ -218,8 +219,8 @@ cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight')
 
 # Saving samples
 np.save(f"{output}/{model}/dynesty_samples.npy", f3d.results.samples)
-np.save(f"{output}/{model}/best_model.npy", f3d.write_bestmodel())
-np.save (f"{output}/{model}/dynesty_stats.npy",f3d.print_stats())
+np.save(f"{output}/{model}/best_model.npy", f3d.write_bestmodel(model))
+np.save (f"{output}/{model}/dynesty_stats.npy",f3d.print_stats(model))
 
 ################################################################################################################
 #HOW I HAVE TO CREATE THE GALAXY FOR THE BEST MODEL
