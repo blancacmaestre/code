@@ -137,6 +137,8 @@ parser = argparse.ArgumentParser(description='Process some parameters.')
 parser.add_argument('--fitting', type=str, required=True, help='Freepar parameter')
 parser.add_argument('--mask', type=str, required=True, help='Mask parameter')
 parser.add_argument('--model', type=str, required=True, help='Model parameter')
+parser.add_argument('--fitsname', type=str, required=True, help='Fits name')
+parser.add_argument('--beamsize', type=str, required=True, help='beamsize parameter')
 
 # Parse arguments
 args = parser.parse_args()
@@ -150,6 +152,8 @@ dens = eval(args.dens) """
 fitting = args.fitting.split(',')  # Convert comma-separated string back to list
 mask = args.mask
 model = args.model
+beamsize = eval(args.beamsize)
+fitsname = args.fitsname
 
 # Print the arguments to verify
 print(f"fitting: {fitting}, mask: {mask}, model: {model}")
@@ -160,17 +164,19 @@ print(f"fitting: {fitting}, mask: {mask}, model: {model}")
 # Name of the FITS file to be fitted
 model = model
 threads = 8
-fitsname = f"/home/user/THESIS/models/model4/model4.fits"
+fitsname = fitsname
 #freepar = [['vrot','vdisp','inc_single','phi_single'],['vrot','vdisp','dens','inc_single','phi_single']]
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/testing_in_container"
+output = "/home/user/THESIS/NEW_TESTS/ring_number_70_0.001"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
 
+radii=np.arange((beamsize/2),240,beamsize)
+
 # Initializing rings. 
-f3d.init(radii=np.arange(30,240,60),xpos=25.5,ypos=25.5,vsys=0.0,\
+f3d.init(radii=radii,xpos=25.5,ypos=25.5,vsys=0.0,\
          vrot=100,vdisp=10,vrad=0,z0=30,inc=70,phi=0)
 
 # Here it is possible to give any other BBarolo parameter, for example to control

@@ -10,19 +10,39 @@ import matplotlib.pyplot as plt
 from pyBBarolo.wrapper import PVSlice
 from tools import calculate_SNR
 
-BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo/BBarolo"
-output = "/Users/blanca/Documents/TESIS/software/THESIS/"
+
+BBmain = "/home/user/Bbarolo/BBarolo"
+output = "/home/user/THESIS/models_tests/"
 
 # General parameters for datacube
 xysize, vsize = 51,64   # Number of pixels/channels   #Value in model1 = 51,128  #value in ngc2403 75, 62
-pixsize   = 20   # Size of pixels (arcsec)             #Value in model1 = 20      #value in ngc2403 32 
+pixsize   = 14   # Size of pixels (arcsec)             #Value in model1 = 20      #value in ngc2403 32 
 chwidth   =  10   # Channel width (km/s)                #Value in model1 = 5       #value in ngc2403 -5.12 
-beamFWHM  = 60   # Beam size (arcsec)                  #Value in model1 = 60      #value in ngc2403 180 or 360
-modname   = 'test'   # Name of the model           
+beamFWHM  = 40   # Beam size (arcsec)                  #Value in model1 = 60      #value in ngc2403 180 or 360
+modname   = 'CGal_6_70_0.001'   # Name of the model           
 noiserms  = 0.001   # RMS noise in Jy/beam            #Value in model1 = 0.01     #value in ngc2403 0.0015
 
 # Basic parameters of the model
-radmax  = 300   #Value in model1 = 240
+
+radmax  = 240
+radii   = np.arange(0,radmax,beamFWHM)
+#dens   = 20*np.exp(-radii/100-50/(0.5*radii+50))
+#vrot   = 2./np.pi*150*np.arctan(radii/30.)
+dens    = np.full(len(radii),10)
+vrot    = np.full(len(radii),100)
+vdisp   = np.full(len(radii),10.)
+pa      = np.full(len(radii),0.)
+inc     = np.full(len(radii),70.)
+z0      = np.full(len(radii),30.)
+vsys    = np.full(len(radii),0)
+xpos    = 25.5
+ypos    = 25.5
+
+dens_shape = "constant"
+vrot_shape = "constant"
+vdisp_shape = "constant"
+
+""" radmax  = 300   #Value in model1 = 240
 radii   = np.arange(0,radmax,pixsize) 
 dens   = 20*np.exp(-radii/100-50/(0.5*radii+100))
 dens_shape = "exponential"
@@ -35,7 +55,7 @@ inc  = np.full(len(radii),45)         #Value in model1 = 60 value in ngc2403 62.
 z0   = np.full(len(radii),10)         #Value in model1 = 30
 vsys = np.full(len(radii),0)       #Value in model1 = 0  value in ngc2403 132.8
 xpos = 25.5
-ypos = 25.5
+ypos = 25.5 """
 
 # Initializing a SimulatedGalaxyCube instance
 s = SimulatedGalaxyCube(axisDim=[xysize, xysize, vsize],\
