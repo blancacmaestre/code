@@ -113,10 +113,10 @@ class BayesianBBaroloMod(BayesianBBarolo):
         #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
         #Option B Standard absolute residuals: cube noise, residual muplitied by 1000 as done before
-        #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
+        res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
 
         #Option C Standard Gaussian residuals: cube noise,
-        res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
+        #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
         
         #Option D Gaussian residuals: no noise
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
@@ -168,7 +168,7 @@ fitsname = fitsname
 #freepar = [['vrot','vdisp','inc_single','phi_single'],['vrot','vdisp','dens','inc_single','phi_single']]
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/NEW_TESTS/ring_number_70_0.001"
+output = "/home/user/THESIS/NEW_TESTS/new_ring_number_70_0.01_B"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)

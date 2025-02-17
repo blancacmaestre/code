@@ -1,0 +1,32 @@
+Name of the model = CGal_6_70_0.01
+
+CUBE PARAMETERS
+
+Number of pixels in x/y = 51
+Size of pixels (arcsec)= 14
+Number of channels = 64
+Channel width = 10
+Beam width = 40
+RMS noise in Jy/beam = 0.01
+xpos and ypos = 25.5,25.5
+
+GALAXY PARAMETERS
+
+SNR = 4.436325064727238
+Maximum radius of galaxy = 240
+Beam width = 40
+Number of radii = 18
+Density profile initial value = 10
+Density ptofile shape = constant
+
+VELOCITIES
+Rotational velocity initial value = 100
+Rotational velocity shape = constant
+Velocity dispersion initial value= 10.0
+Velocity dispersion shape = constant
+
+GEOMETRY
+Position angle = 0.0
+Inclination = 70.0
+Thickness = 30.0
+Systemic velocity (km/s) = 0
