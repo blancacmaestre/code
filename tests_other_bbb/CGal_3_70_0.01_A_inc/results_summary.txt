@@ -1,0 +1,14 @@
+
+Writing the best model to output directory ... Done!
+
+Best-fit parameters (log_likelihood = -290110.66):
+         inc =      0.003     -0.002     +0.002
+
+Maximum logl: -290110.625 at:
+         inc =      0.002 
+Summary
+=======
+niter: 16429
+ncall: 43453
+eff(%): 37.450
+logz: -290121.033 +/-  0.086

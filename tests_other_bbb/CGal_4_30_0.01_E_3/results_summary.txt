@@ -1,0 +1,32 @@
+
+Writing the best model to output directory ... Done!
+
+Best-fit parameters (log_likelihood = -580.39):
+       vrot1 =    115.441     -6.565     +6.245
+       vrot2 =    120.458     -4.711     +4.181
+       vrot3 =    117.368     -4.378     +3.426
+       vrot4 =    120.866     -4.719     +3.472
+      vdisp1 =     10.851     -1.686     +2.067
+      vdisp2 =      8.924     -0.696     +0.587
+      vdisp3 =     10.491     -0.392     +0.437
+      vdisp4 =      7.125     -0.411     +0.423
+         inc =     24.335     -0.702     +1.040
+         phi =    359.693     -0.269     +0.092
+
+Maximum logl: -578.4963989257812 at:
+       vrot1 =    119.176 
+       vrot2 =    119.795 
+       vrot3 =    120.681 
+       vrot4 =    120.903 
+      vdisp1 =     10.097 
+      vdisp2 =      9.045 
+      vdisp3 =     10.602 
+      vdisp4 =      7.164 
+         inc =     23.945 
+         phi =    359.382 
+Summary
+=======
+niter: 32247
+ncall: 863770
+eff(%):  3.498
+logz: -622.994 +/-  0.190

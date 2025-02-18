@@ -12,15 +12,16 @@ from tools import calculate_SNR
 
 
 BBmain = "/home/user/Bbarolo/BBarolo"
-output = "/home/user/THESIS/models_tests/"
+output = "/home/user/THESIS/models/A_MODELS_new/new_attempt/"
 
 # General parameters for datacube
 xysize, vsize = 51,64   # Number of pixels/channels   #Value in model1 = 51,128  #value in ngc2403 75, 62
-pixsize   = 14  # Size of pixels (arcsec)             #Value in model1 = 20      #value in ngc2403 32 
+pixsize   = 20  # Size of pixels (arcsec)             #Value in model1 = 20      #value in ngc2403 32 
 chwidth   =  10   # Channel width (km/s)                #Value in model1 = 5       #value in ngc2403 -5.12 
-beamFWHM  =40  # Beam size (arcsec)                  #Value in model1 = 60      #value in ngc2403 180 or 360
-modname   = 'CGal_6_70_0.01'   # Name of the model           
+beamFWHM  = 60  # Beam size (arcsec)                  #Value in model1 = 60      #value in ngc2403 180 or 360
+modname   = "CGal_4_80_0.01"  # Name of the model           
 noiserms  = 0.01   # RMS noise in Jy/beam            #Value in model1 = 0.01     #value in ngc2403 0.0015
+
 
 # Basic parameters of the model
 
@@ -32,11 +33,9 @@ dens    = np.full(len(radii),10)
 vrot    = np.full(len(radii),100)
 vdisp   = np.full(len(radii),10.)
 pa      = np.full(len(radii),0.)
-inc     = np.full(len(radii),70.)
+inc     = np.full(len(radii),80.)
 z0      = np.full(len(radii),30.)
 vsys    = np.full(len(radii),0)
-xpos    = 25.5
-ypos    = 25.5
 
 dens_shape = "constant"
 vrot_shape = "constant"
@@ -63,7 +62,7 @@ s = SimulatedGalaxyCube(axisDim=[xysize, xysize, vsize],\
                         beam=beamFWHM/3600., bunit='JY/BEAM', obj=modname)
 
 # Setting up galaxy parameters (if parameters are not given, they are random!)
-s.define_galaxy(xpos=xpos, ypos=ypos, radii=radii,vsys=vsys,vdisp=vdisp,inc=inc,pa=pa,\
+s.define_galaxy(radii=radii,vsys=vsys,vdisp=vdisp,inc=inc,pa=pa,\
                 dens=dens,z0=z0,vrot=vrot,warpinc=False,warppa=False)
 print(s)
 
@@ -97,7 +96,6 @@ with open(os.path.join(f"{output}{modname}", f"{modname}_input.txt"), 'w') as fi
     file.write(f"Channel width = {chwidth}\n")
     file.write(f"Beam width = {beamFWHM}\n")
     file.write(f"RMS noise in Jy/beam = {noiserms}\n")
-    file.write(f"xpos and ypos = {xpos},{ypos}\n")
     file.write("\n")
     file.write("GALAXY PARAMETERS\n")
     file.write("\n")

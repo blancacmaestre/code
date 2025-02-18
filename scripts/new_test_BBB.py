@@ -9,29 +9,30 @@ sys.path.insert(0,'/Users/blanca/Documents/TESIS/software/Bbarolo/BBarolo')
 from pyBBarolo import version
 print (version)
 
-
+from contextlib import redirect_stdout, redirect_stderr, ExitStack
 from pyBBarolo.bayesian import BayesianBBarolo
 from dynesty import plotting as dyplot
 import matplotlib.pyplot as plt
 import numpy as np
 from pyBBarolo.BB_interface import libBB
-from pyBBarolo.bayesian import BayesianBBarolo
 import ctypes, time, copy
 from pyBBarolo import Param, Rings, FitMod3D, reshapePointer, vprint, isIterable
-import numpy as np
-from pyBBarolo.bayesian import BayesianBBarolo
-from dynesty import plotting as dyplot
-import matplotlib.pyplot as plt
-import numpy as np
 import os
 import gc
+import corner
 
-# Set a different temporary directory
-#os.environ['TMPDIR'] = os.path.join(os.path.expanduser('~'), 'tmp')
+class Tee:
+    def __init__(self, *files):
+        self.files = files
 
-# Create the temporary directory if it doesn't exist
-#if not os.path.exists(os.environ['TMPDIR']):
-#    os.makedirs(os.environ['TMPDIR'])
+    def write(self, obj):
+        for f in self.files:
+            f.write(obj)
+
+    def flush(self):
+        for f in self.files:
+            f.flush()
+
 
 def my_norm(model,data):
     nrm = np.nansum(data)/np.nansum(model)
@@ -119,13 +120,13 @@ class BayesianBBaroloMod(BayesianBBarolo):
     def _calculate_residuals(self,model,data,mask=None):
         
         #Option A: Standard absolute residuals: no noise, residual muplitied by 1000 as done before
-        #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
+        res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
         #Option B Standard absolute residuals: cube noise, residual muplitied by 1000 as done before
         #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
 
         #Option C Standard Gaussian residuals: cube noise,
-        res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
+        #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
 
         #Option D Gaussian residuals: no noise
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
@@ -133,25 +134,29 @@ class BayesianBBaroloMod(BayesianBBarolo):
         #Option E Gaussian residuals: no noise, multiplied by 1000
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
+        #Option F Gaussian residuals: cube noise, multiplied by 1000    
+        #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
+
 
         return res
     
 
 
 # Name of the FITS file to be fitted
-model = "testing_stuff"
-fitsname = f"/home/user/THESIS/models/model4/model4.fits"
-freepar = ['vrot','vdisp','inc_single','phi_single']
+model = "CGal_3_70_0.01_A_inc"
+fitsname = f"/home/user/THESIS/models/A_MODELS_new/CGal_3_70_0.01/CGal_3_70_0.01.fits"
+freepar = ['inc_single']
+#['vrot','vdisp','inc_single','phi_single']
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/tests_new_res"
+output = "/home/user/THESIS/tests_other_bbb"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
 
 # Initializing rings. 
-f3d.init(radii=np.arange(30,240,60),xpos=25.5,ypos=25.5,vsys=0.0,\
-         vrot=100,vdisp=10,vrad=0,z0=30,inc=60,phi=0)
+f3d.init(radii=np.arange(40,240,80),xpos=32,ypos=32,vsys=0.0,\
+         vrot=100,vdisp=10,vrad=0,z0=30,inc=70,phi=0)
 
 # Here it is possible to give any other BBarolo parameter, for example to control
 # the mask, linear, bweight, cdens, wfunc, etc...
@@ -162,7 +167,7 @@ f3d.set_options(mask="SEARCH",linear=0,outfolder=f"{output}/{model}",plotmask=Tr
 f3d.show_options()
 
 # Default priors are uniform and the default boundaries for the fit are in f3d.bounds.
-f3d.bounds['vrot']  = [0,250]
+""" f3d.bounds['vrot']  = [0,250]
 f3d.bounds['vdisp'] = [1,40]
 f3d.bounds['inc']   = [20,80]
 f3d.bounds['phi']   = [-20,20]
@@ -170,7 +175,9 @@ f3d.bounds['z0']    = [0,60]
 f3d.bounds['xpos']  = [20,30]
 f3d.bounds['ypos']  = [20,30]
 f3d.bounds['vsys']  = [-20,20]
-f3d.bounds['dens']  = [1,30]
+f3d.bounds['dens']  = [1,30] """
+
+#f3d.priors['vrot']["loc"]= [50,200]
 
 
 # Keywords to be passed to the sample run
@@ -184,19 +191,39 @@ f3d.compute(threads=8,useBBres=False,method='dynesty',dynamic=True,
 
 print (f3d.params,f3d._log_likelihood(f3d.params))
 
-# Writing best model and plots (experimental, to be checked)
-f3d.write_bestmodel()
+output_file_path = os.path.join(output, model, "results_summary.txt")
+with open(output_file_path, 'w') as f:
+    tee = Tee(sys.stdout, f)
+    with ExitStack() as stack:
+        stack.enter_context(redirect_stdout(tee))
+        stack.enter_context(redirect_stderr(tee))
 
-# Print some statistics of the sample
-f3d.print_stats()
+        # Writing best model and plots (experimental, to be checked)
+        f3d.write_bestmodel()
+
+        # Print some statistics of the sample
+        f3d.print_stats()
+
+        # Print summary of results
+        f3d.results.summary()
+
+#corner.corner(
+#    f3d.samples, weights=f3d.weights, labels=f3d.freepar_names, color='purple',
+#    plot_datapoints=False, label_kwargs=dict(fontsize=20))
+
 
 # Plot the 2-D marginalized posteriors.
 quantiles = [0.16,0.50,0.84]
-cfig, caxes = dyplot.cornerplot(f3d.results,show_titles=True,title_quantiles=quantiles,
-                                quantiles=quantiles, color='blue',max_n_ticks=5, \
+cfig, caxes = dyplot.cornerplot(f3d.results,show_titles=True,truth_color='black',title_quantiles=quantiles,
+                                quantiles=quantiles, color='purple',max_n_ticks=5, \
                                 labels=f3d.freepar_names, label_kwargs=dict(fontsize=20))
 cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight')
 
+tfig, axes = dyplot.traceplot(f3d.results,
+                             truth_color='black', show_titles=True,
+                             trace_cmap='viridis', connect=True,
+                             connect_highlight=range(5))
+tfig.savefig(f'{output}/{model}/{model}_trace.pdf',bbox_inches='tight')
 # Saving samples
 np.save("dynesty_samples.npy", f3d.results.samples)
 

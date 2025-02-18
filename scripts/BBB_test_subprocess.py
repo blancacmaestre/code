@@ -13,16 +13,26 @@ from dynesty import plotting as dyplot
 import matplotlib.pyplot as plt
 import numpy as np
 from pyBBarolo.BB_interface import libBB
-from pyBBarolo.bayesian import BayesianBBarolo
 import ctypes, time, copy
 from pyBBarolo import Param, Rings, FitMod3D, reshapePointer, vprint, isIterable
-import numpy as np
-from pyBBarolo.bayesian import BayesianBBarolo
 from dynesty import plotting as dyplot
-import matplotlib.pyplot as plt
-import numpy as np
 import multiprocessing
 import argparse
+import gc
+from contextlib import redirect_stdout, redirect_stderr, ExitStack
+import os
+
+class Tee:
+    def __init__(self, *files):
+        self.files = files
+
+    def write(self, obj):
+        for f in self.files:
+            f.write(obj)
+
+    def flush(self):
+        for f in self.files:
+            f.flush()
 
 def my_norm(model,data):
     nrm = np.nansum(data)/np.nansum(model)
@@ -110,10 +120,10 @@ class BayesianBBaroloMod(BayesianBBarolo):
     def _calculate_residuals(self,model,data,mask=None):
 
         #Option A: Standard absolute residuals: no noise, residual muplitied by 1000 as done before
-        #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
+        res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
         #Option B Standard absolute residuals: cube noise, residual muplitied by 1000 as done before
-        res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
+        #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
 
         #Option C Standard Gaussian residuals: cube noise,
         #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
@@ -123,6 +133,9 @@ class BayesianBBaroloMod(BayesianBBarolo):
         
         #Option E Gaussian residuals: no noise, multiplied by 1000
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1000)
+
+        #Option F Gaussian residuals: cube noise, multiplied by 1000    
+        res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
          
 
         return res
@@ -134,12 +147,12 @@ parser = argparse.ArgumentParser(description='Process some parameters.')
 #parser.add_argument('--inc', type=str, required=True, help='Inc parameter')
 #parser.add_argument('--phi', type=str, required=True, help='Phi parameter')
 #parser.add_argument('--dens', type=str, required=True, help='Dens parameter')
-parser.add_argument('--fitting', type=str, required=True, help='Freepar parameter')
+#parser.add_argument('--fitting', type=str, required=True, help='Freepar parameter')
 parser.add_argument('--mask', type=str, required=True, help='Mask parameter')
 parser.add_argument('--model', type=str, required=True, help='Model parameter')
 parser.add_argument('--fitsname', type=str, required=True, help='Fits name')
 parser.add_argument('--beamsize', type=str, required=True, help='beamsize parameter')
-
+parser.add_argument('--centre', type=str, required=True, help='positiontion centre of the galaxy')
 # Parse arguments
 args = parser.parse_args()
 
@@ -149,24 +162,23 @@ vdisp = eval(args.vdisp)
 inc = eval(args.inc)
 phi = eval(args.phi)
 dens = eval(args.dens) """
-fitting = args.fitting.split(',')  # Convert comma-separated string back to list
+#fitting = args.fitting.split(',')  # Convert comma-separated string back to list
 mask = args.mask
 model = args.model
 beamsize = eval(args.beamsize)
 fitsname = args.fitsname
+centre = eval(args.centre)
 
 # Print the arguments to verify
-print(f"fitting: {fitting}, mask: {mask}, model: {model}")
+print(f" mask: {mask}, model: {model}, beamsize: {beamsize}, fitsname: {fitsname}, centre: {centre}") 
 #vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, 
 
 # Your existing code here
 
 # Name of the FITS file to be fitted
 model = model
-threads = 8
 fitsname = fitsname
-#freepar = [['vrot','vdisp','inc_single','phi_single'],['vrot','vdisp','dens','inc_single','phi_single']]
-#Uncomment to fit the density
+freepar = ['vrot','vdisp','inc_single','phi_single']
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
 output = "/home/user/THESIS/NEW_TESTS/new_ring_number_70_0.01_B"
 
@@ -175,13 +187,14 @@ f3d = BayesianBBaroloMod(fitsname)
 
 radii=np.arange((beamsize/2),240,beamsize)
 
+
 # Initializing rings. 
-f3d.init(radii=radii,xpos=25.5,ypos=25.5,vsys=0.0,\
+f3d.init(radii=radii,xpos=centre,ypos=centre,vsys=0.0,\
          vrot=100,vdisp=10,vrad=0,z0=30,inc=70,phi=0)
 
 # Here it is possible to give any other BBarolo parameter, for example to control
 # the mask, linear, bweight, cdens, wfunc, etc...
-f3d.set_options(mask=mask,linear=0,outfolder=f"{output}/{model}",plotmask=True)
+f3d.set_options(mask=mask,linear=0,outfolder=f"{output}/{model}",plotmask=True, threads=8)
 #To remove the mask
 #f3d.set_options(mask="NONE",linear=0,outfolder=f"output/{model}",plotmask=True)
 
@@ -205,28 +218,45 @@ run_kwargs = dict()
 sample_kwargs = dict()
 
 # Running the fit with dynesty.
-f3d.compute(threads=threads,useBBres=False,method='dynesty',dynamic=True,
-            freepar=fitting,run_kwargs=run_kwargs,sample_kwargs=sample_kwargs)
+f3d.compute(threads=8,useBBres=False,method='dynesty',dynamic=True,
+            freepar=freepar,run_kwargs=run_kwargs,sample_kwargs=sample_kwargs)
 
 print (f3d.params,f3d._log_likelihood(f3d.params))
 
-# Writing best model and plots (experimental, to be checked)
-f3d.write_bestmodel()
+output_file_path = os.path.join(output, model, "results_summary.txt")
+with open(output_file_path, 'w') as f:
+    tee = Tee(sys.stdout, f)
+    with ExitStack() as stack:
+        stack.enter_context(redirect_stdout(tee))
+        stack.enter_context(redirect_stderr(tee))
 
-# Print some statistics of the sample
-f3d.print_stats()
+        # Writing best model and plots (experimental, to be checked)
+        f3d.write_bestmodel()
+
+        # Print some statistics of the sample
+        f3d.print_stats()
+
+        # Print summary of results
+        f3d.results.summary()
 
 # Plot the 2-D marginalized posteriors.
 quantiles = [0.16,0.50,0.84]
 cfig, caxes = dyplot.cornerplot(f3d.results,show_titles=True,title_quantiles=quantiles,
-                                quantiles=quantiles, color='blue',max_n_ticks=5, \
+                                quantiles=quantiles, color='pink',max_n_ticks=5, \
                                 labels=f3d.freepar_names, label_kwargs=dict(fontsize=20))
 cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight')
 
 # Saving samples
 np.save(f"{output}/{model}/dynesty_samples.npy", f3d.results.samples)
-np.save(f"{output}/{model}/best_model.npy", f3d.write_bestmodel(model))
-np.save (f"{output}/{model}/dynesty_stats.npy",f3d.print_stats(model))
+
+tfig, axes = dyplot.traceplot(f3d.results,
+                             truth_color='black', show_titles=True,
+                             trace_cmap='viridis', connect=True,
+                             connect_highlight=range(5))
+tfig.savefig(f'{output}/{model}/{model}_trace.pdf',bbox_inches='tight')
+
+del f3d
+gc.collect()
 
 ################################################################################################################
 #HOW I HAVE TO CREATE THE GALAXY FOR THE BEST MODEL
