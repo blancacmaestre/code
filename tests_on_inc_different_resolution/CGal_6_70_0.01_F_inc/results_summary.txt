@@ -1,0 +1,16 @@
+
+Writing the best model to output directory ... Done!
+/home/user/miniconda3/lib/python3.10/site-packages/dynesty/utils.py:1033: UserWarning: Weights do not sum to 1 and have been renormalized.
+  warnings.warn("Weights do not sum to 1 and have been renormalized.")
+
+Best-fit parameters (log_likelihood = -10784942.00):
+         inc =     69.259     -0.000     +0.000
+
+Maximum logl: -10784942.0 at:
+         inc =     69.259 
+Summary
+=======
+niter: 17798
+ncall: 40998
+eff(%): 43.113
+logz: -10784957.285 +/-  0.087

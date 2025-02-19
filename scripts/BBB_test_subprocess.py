@@ -120,7 +120,7 @@ class BayesianBBaroloMod(BayesianBBarolo):
     def _calculate_residuals(self,model,data,mask=None):
 
         #Option A: Standard absolute residuals: no noise, residual muplitied by 1000 as done before
-        res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
+        #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
         #Option B Standard absolute residuals: cube noise, residual muplitied by 1000 as done before
         #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
@@ -129,13 +129,13 @@ class BayesianBBaroloMod(BayesianBBarolo):
         #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
         
         #Option D Gaussian residuals: no noise
-        #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
+        res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
         
         #Option E Gaussian residuals: no noise, multiplied by 1000
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
         #Option F Gaussian residuals: cube noise, multiplied by 1000    
-        res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
+        #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
          
 
         return res
@@ -153,6 +153,7 @@ parser.add_argument('--model', type=str, required=True, help='Model parameter')
 parser.add_argument('--fitsname', type=str, required=True, help='Fits name')
 parser.add_argument('--beamsize', type=str, required=True, help='beamsize parameter')
 parser.add_argument('--centre', type=str, required=True, help='positiontion centre of the galaxy')
+parser.add_argument('--halfbeam', type=str, required=True, help='half beamsize')
 # Parse arguments
 args = parser.parse_args()
 
@@ -168,9 +169,10 @@ model = args.model
 beamsize = eval(args.beamsize)
 fitsname = args.fitsname
 centre = eval(args.centre)
+halfbeam = eval(args.halfbeam)
 
 # Print the arguments to verify
-print(f" mask: {mask}, model: {model}, beamsize: {beamsize}, fitsname: {fitsname}, centre: {centre}") 
+print(f" mask: {mask}, model: {model}, beamsize: {beamsize}, fitsname: {fitsname}, centre: {centre}, halfbeam: {halfbeam}")  
 #vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, 
 
 # Your existing code here
@@ -180,12 +182,12 @@ model = model
 fitsname = fitsname
 freepar = ['vrot','vdisp','inc_single','phi_single']
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/NEW_TESTS/new_ring_number_70_0.01_B"
+output = "/home/user/THESIS/tests_all_resolution/newPA"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
 
-radii=np.arange((beamsize/2),240,beamsize)
+radii=np.arange(halfbeam,240,beamsize)
 
 
 # Initializing rings. 
@@ -242,7 +244,7 @@ with open(output_file_path, 'w') as f:
 # Plot the 2-D marginalized posteriors.
 quantiles = [0.16,0.50,0.84]
 cfig, caxes = dyplot.cornerplot(f3d.results,show_titles=True,title_quantiles=quantiles,
-                                quantiles=quantiles, color='pink',max_n_ticks=5, \
+                                quantiles=quantiles, color='purple',max_n_ticks=5, \
                                 labels=f3d.freepar_names, label_kwargs=dict(fontsize=20))
 cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight')
 

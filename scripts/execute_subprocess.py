@@ -1,4 +1,5 @@
 import subprocess
+import numpy as np
 
 # EXECUTABLE LISTS:
 # PARAMETER BOUNDS:
@@ -12,24 +13,28 @@ import subprocess
 #fittings = [freepar[0], freepar[0], freepar[0], freepar[0], freepar[0]]
 #fittings = [freepar[0]]
 
-masks = ["SEARCH","SEARCH", "SEARCH", "SEARCH","SEARCH"]
+masks = ["SEARCH", "SEARCH", "SEARCH","SEARCH","SEARCH"]
 #masks = ["SEARCH"]
-models = ["CGal_2_70_0.01_B","CGal_3_70_0.01_B", "CGal_4_70_0.01_B", "CGal_5_70_0.01_B","CGal_6_70_0.01_B"]
+models = ["CGal_6_70_0.01_D","CGal_5_70_0.01_D", "CGal_4_70_0.01_D", "CGal_3_70_0.01_D", "CGal_2_70_0.01_D_inctest"]
 #models = ["model4_test"]
-beamsizes = [120,80,60,48,40]
+beamsizes = [40,48,60,80,120]
+#beamsizes = np.full(len(models),60)  
+halfbeams = [20,24,30,40,60]
+#halfbeams = np.full(len(models),30)
 #beamsizes = [60]
-fitsnames = [ "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_2_70_0.01/CGal_2_70_0.01.fits",\
-              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_3_70_0.01/CGal_3_70_0.01.fits",\
-              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_70_0.01/CGal_4_70_0.01.fits",\
-              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_5_70_0.01/CGal_5_70_0.01.fits",\
-              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_6_70_0.01/CGal_6_70_0.01.fits"]
+fitsnames = [ "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_6_70_0.01/CGal_6_70_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_5_70_0.01/CGal_5_70_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_4_70_0.01/CGal_4_70_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_3_70_0.01/CGal_3_70_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_2_70_0.01/CGal_2_70_0.01.fits"]
 
 #fitsnames = ["/home/user/THESIS/models/model4/model4.fits"]
-centres = [12.5, 19, 25.5, 32, 38.5]
+centres = [38.5,32,25.5,19,12.5]
+#centres = np.full(len(models),25.5)
 # Ensure all lists have the same length
 assert """ len(vrots) == len(vdisps) == len(incs) == len(phis) == len(denss) ==  len(fittings) == """ 
 
-len(masks) == len(models) == len(fitsnames) == len(beamsizes) == len(centres), "All parameter lists must have the same length"
+len(masks) == len(models) == len(fitsnames) == len(beamsizes) == len(centres) == len(halfbeams), "All parameter lists must have the same length"
 
 # Loop through the parameters and execute BBB_template
 for i in range(len(models)):
@@ -44,6 +49,7 @@ for i in range(len(models)):
     fitsname = fitsnames[i]
     beamsize = beamsizes[i]
     centre = centres[i]
+    halfbeam = halfbeams[i]
 
-    print(f"Running BBB_template with  mask: {mask}, model: {model}, beamsize: {beamsize}, fitsname: {fitsname}, centre: {centre}") #vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, fitting: {fitting},
-    subprocess.run(['python', '/home/user/THESIS/scripts/BBB_test_subprocess.py', '--mask', mask, '--model', model,  '--beamsize', str(beamsize),  '--fitsname', fitsname, '--centre', str(centre) ])# '--fitting', ','.join(fitting),
+    print(f"Running BBB_template with  mask: {mask}, model: {model}, beamsize: {beamsize}, fitsname: {fitsname}, centre: {centre}, halfbeam: {halfbeam}") #vrot: {vrot}, vdisp: {vdisp}, inc: {inc}, phi: {phi}, dens: {dens}, fitting: {fitting},
+    subprocess.run(['python', '/home/user/THESIS/scripts/BBB_test_subprocess.py', '--mask', mask, '--model', model,  '--beamsize', str(beamsize),  '--fitsname', fitsname, '--centre', str(centre),  '--halfbeam', str(halfbeam) ])# '--fitting', ','.join(fitting),

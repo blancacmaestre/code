@@ -9,6 +9,10 @@ from matplotlib.colors import LogNorm
 from astropy import wcs
 from astropy import units as u
 import numpy.ma as ma
+import imageio
+from ipywidgets import interact, FloatSlider, IntSlider
+from GAstro.plot import ploth2
+import os
 BBmain = "/Users/blanca/Documents/TESIS/software/Bbarolo-1.7/BBarolo" 
 
 ##########################################################################################################################################################
@@ -173,7 +177,10 @@ def plot_PV(fname1, fname2, ringfile1, ringfile2, output):
     plt.savefig(f'{output}PV_plot.png')
     plt.show()
 
-    ##########################################################################################################################################################
+##########################################################################################################################################################
+
+#THIS IS A CODE TO PLOT THE CHANNELS ALL TOGETHER
+
 def add_channels(fname, k_min=0, k_max=10):
     head = fits.getheader(fname)
     image = fits.getdata(fname) #numpy array, my data
@@ -205,4 +212,127 @@ def add_channels(fname, k_min=0, k_max=10):
     axs[1].imshow(choose_channels, cmap="Greys", origin="lower")
     axs[1].set_title(f'Chosen Channels ({k_min} < k < {k_max})')
 
+    plt.show()
+
+##########################################################################################################################################################
+
+#THIS IS A CODE TO CREATE A GIF WITH THE CHANNELS AND RESIDUALS
+
+def chview_gif(data, data2=None, show_residuals=True, output_gif="channel_animation.gif", fps=5, figtitle=None):
+    
+    frames = []
+    frames_filenames = []
+    rms = np.nanstd(data[0, :, :])
+    Hres = (data - data2) / rms
+    for channel in range(data.shape[0]):  # Iterate over all channels
+        if data2 is None:
+            fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+            axl = [ax, None]
+        elif show_residuals:
+            fig, axl = plt.subplots(1, 3, figsize=(12, 4))
+        else:
+            fig, axl = plt.subplots(1, 2, figsize=(8, 4))
+
+        # First data
+        ax = axl[0]
+        rms = np.nanstd(data[0, :, :])
+        if rms == 0: rms = 0.001
+        dmax = np.nanmax(data)
+        levels = [-3 * rms,] + list(np.linspace(2 * rms, dmax, 6))
+        vmin = 0.1 * np.min(data)
+        vmax = 0.99 * np.max(data)
+
+        _ = ploth2(ax=ax, H=data[channel, :, :], edges=(np.arange(0, data.shape[1]), np.arange(0, data.shape[2])),
+                   cmap="plasma", gamma=0.5, vmin=vmin, vmax=vmax, vminmax_option="absolute",
+                   levels=levels, levels_color="lime")
+
+        ax.set_title(f"Data: Channel {channel}")
+        
+        if data2 is not None:
+            ax = axl[1]
+            _ = ploth2(ax=ax, H=data2[channel, :, :], edges=(np.arange(0, data2.shape[1]), np.arange(0, data2.shape[2])),
+                       cmap="plasma", gamma=0.5, vmin=vmin, vmax=vmax, vminmax_option="absolute",
+                       levels=levels, levels_color="lime")
+            ax.set_title(f"Model:  Channel {channel}")
+            
+            if show_residuals:
+                ax = axl[2]
+                _ = ploth2(ax=ax, H=Hres[channel, :, :], edges=(np.arange(0, data2.shape[1]), np.arange(0, data2.shape[2])),
+                           cmap="seismic", gamma=1, vmin=-10, vmax=10, vminmax_option="absolute", colorbar=True)
+                ax.set_title(f"Residuals: Channel {channel}, Sum={np.nansum(Hres[channel,:,:]):4g}")
+
+            if figtitle is not None:
+                fig.suptitle(figtitle)
+
+        fig.tight_layout()
+
+        # Save frame
+        frame_filename = f"frame_{channel}.png"
+        plt.savefig(frame_filename)
+        plt.close(fig)
+
+        # Append frame to list
+        frames_filenames.append(frame_filename)
+        frames.append(imageio.imread(frame_filename))
+ 
+    # Convert image list to animated GIF
+    # Save frames as a GIF
+    imageio.mimsave(output_gif, frames, fps=fps)
+    print(f"GIF saved as {output_gif}")
+
+    # Remove all PNG frames after creating the GIF
+    for filename in frames_filenames:
+        os.remove(filename)
+
+##########################################################################################################################################################
+
+#THIS IS A CODE TO PLOT THE CHANNELS INTERACTIVELY, WITH THE CURSOR THING
+
+def chview(data,data2=None,show_residuals=True):
+
+        
+    def plot_channel(channel):
+
+        if data2 is None: 
+            fig,ax=plt.subplots(1,1,figsize=(4, 4))
+            axl=[ax,None]
+        elif show_residuals: 
+            fig,axl=plt.subplots(1,3,figsize=(12, 4))
+        else:
+            fig,axl=plt.subplots(1,2,figsize=(8, 4))
+        
+        #First data
+        ax=axl[0]
+        rms=np.nanstd(data[0,:,:])
+        print(rms)
+        if rms==0: rms=0.001
+        dmax=np.nanmax(data)
+        levels=[-3*rms,]+list(np.linspace(2*rms,dmax,6))
+        vmin=0.1*np.min(data)
+        vmax=0.99*np.max(data)
+
+        print(channel)
+        
+        _=ploth2(ax=ax,H=data[channel,:,:],edges=(np.arange(0,data.shape[1]),np.arange(0,data.shape[2])),
+            cmap="plasma",gamma=0.5,vmin=vmin,vmax=vmax, vminmax_option="absolute",
+            levels=levels,levels_color="lime")
+        plt.sca(ax)
+
+        if data2 is not None:
+            ax=axl[1]
+            _=ploth2(ax=ax,H=data2[channel,:,:],edges=(np.arange(0,data2.shape[1]),np.arange(0,data2.shape[2])),
+            cmap="plasma",gamma=0.5,vmin=vmin,vmax=vmax, vminmax_option="absolute",
+            levels=levels,levels_color="lime")
+            plt.sca(ax)
+
+            if show_residuals:
+                Hres=(data-data2)/rms
+                ax=axl[2]
+                _=ploth2(ax=ax,H=Hres[channel,:,:],edges=(np.arange(0,data2.shape[1]),np.arange(0,data2.shape[2])),
+                cmap="seismic",gamma=1,vmin=-10,vmax=10, vminmax_option="absolute",colorbar=True)
+                plt.sca(ax)                
+                
+        fig.tight_layout()
+        
+    interact(plot_channel, channel=IntSlider(value=0, min=0, max=data.shape[0]-1, step=1))
     plt.show()
