@@ -16,7 +16,7 @@ set multiplot layout 3,1 rowsfirst
 @TICSF
 @TMARGIN
 @NOXTICS
-set yrange [-5:189.722]
+set yrange [-5:191.523]
 set ylabel 'V_c  [km/s]'
 set ytics 50
 set mytics 5
@@ -24,7 +24,7 @@ plot '/home/user/THESIS/tests_all_resolution/inclination_livepoints/CGal_4_40_0.
 set title ''
 @MMARGIN
 @NOXTICS
-set yrange [21.3146:26.0512]
+set yrange [21.0181:25.6887]
 set ylabel 'i [deg]'
 set ytics 5
 set mytics 5
@@ -32,7 +32,7 @@ plot '/home/user/THESIS/tests_all_resolution/inclination_livepoints/CGal_4_40_0.
 @BMARGIN
 @XTICS
 set xlabel 'Radius [arcsec]'
-set yrange [29.9141:36.5616]
+set yrange [29.4282:35.9678]
 set ylabel 'P.A. [deg]'
 set ytics 5
 set mytics 5
@@ -52,7 +52,7 @@ set multiplot layout 3,1 rowsfirst
 @TICSF
 @TMARGIN
 @NOXTICS
-set yrange [0:27.4382]
+set yrange [0:27.5883]
 set ylabel '{/Symbol s} [km/s]'
 set ytics 5
 set mytics 5

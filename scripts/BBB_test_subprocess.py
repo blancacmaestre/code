@@ -159,11 +159,11 @@ parser.add_argument('--halfbeam', type=str, required=True, help='half beamsize')
 args = parser.parse_args()
 
 # Convert string arguments to numerical types
-""" vrot = eval(args.vrot)
-vdisp = eval(args.vdisp)
-inc = eval(args.inc)
-phi = eval(args.phi)
-dens = eval(args.dens) """
+#vrot = eval(args.vrot)
+#vdisp = eval(args.vdisp)
+#inc = eval(args.inc)
+#phi = eval(args.phi)
+#dens = eval(args.dens)
 #fitting = args.fitting.split(',')  # Convert comma-separated string back to list
 mask = args.mask
 model = args.model
@@ -204,15 +204,15 @@ f3d.set_options(mask=mask,linear=0,outfolder=f"{output}/{model}",plotmask=True, 
 f3d.show_options()
 
 # Default priors are uniform and the default boundaries for the fit are in f3d.bounds.
-""" f3d.bounds['vrot']  = vrot
-f3d.bounds['vdisp'] = vdisp
-f3d.bounds['inc']   = inc
-f3d.bounds['phi']   = phi
-f3d.bounds['z0']    = [0,40]
-f3d.bounds['xpos']  = [20,30]
-f3d.bounds['ypos']  = [20,30]
-f3d.bounds['vsys']  = [-20,20]
-f3d.bounds['dens']  = dens """
+#f3d.bounds['vrot']  = vrot
+#f3d.bounds['vdisp'] = vdisp
+#f3d.bounds['inc']   = inc
+#f3d.bounds['phi']   = phi
+#f3d.bounds['z0']    = [0,40]
+#f3d.bounds['xpos']  = [20,30]
+#f3d.bounds['ypos']  = [20,30]
+#f3d.bounds['vsys']  = [-20,20]
+#f3d.bounds['dens']  = dens
 
 
 # Keywords to be passed to the sample run
@@ -245,11 +245,11 @@ with open(output_file_path, 'w') as f:
         f3d.results.summary()
 
 
-""" cfig =corner.corner(
-    f3d.samples, weights=f3d.weights, labels=f3d.freepar_names, color='purple',
-    plot_datapoints=False, label_kwargs=dict(fontsize=20))
+#cfig =corner.corner(
+#    f3d.samples, weights=f3d.weights, labels=f3d.freepar_names, color='purple',
+#    plot_datapoints=False, label_kwargs=dict(fontsize=20))
 
-cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight') """
+#cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight') """
 
 # Plot the 2-D marginalized posteriors.
 quantiles = [0.16,0.50,0.84]
