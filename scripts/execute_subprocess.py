@@ -13,24 +13,31 @@ import numpy as np
 #fittings = [freepar[0], freepar[0], freepar[0], freepar[0], freepar[0]]
 #fittings = [freepar[0]]
 
-masks = ["SEARCH", "SEARCH", "SEARCH","SEARCH","SEARCH"]
-#masks = ["SEARCH"]
+""" masks = ["SEARCH", "SEARCH", "SEARCH","SEARCH","SEARCH"]
 models = ["CGal_6_70_0.01_D","CGal_5_70_0.01_D", "CGal_4_70_0.01_D", "CGal_3_70_0.01_D", "CGal_2_70_0.01_D_inctest"]
-#models = ["model4_test"]
 beamsizes = [40,48,60,80,120]
-#beamsizes = np.full(len(models),60)  
 halfbeams = [20,24,30,40,60]
-#halfbeams = np.full(len(models),30)
-#beamsizes = [60]
+centres = [38.5,32,25.5,19,12.5]
 fitsnames = [ "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_6_70_0.01/CGal_6_70_0.01.fits",\
               "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_5_70_0.01/CGal_5_70_0.01.fits",\
               "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_4_70_0.01/CGal_4_70_0.01.fits",\
               "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_3_70_0.01/CGal_3_70_0.01.fits",\
-              "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_2_70_0.01/CGal_2_70_0.01.fits"]
+              "/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_2_70_0.01/CGal_2_70_0.01.fits"] """
 
-#fitsnames = ["/home/user/THESIS/models/model4/model4.fits"]
-centres = [38.5,32,25.5,19,12.5]
-#centres = np.full(len(models),25.5)
+
+
+masks = ["SEARCH", "SEARCH", "SEARCH","SEARCH","SEARCH", "SEARCH"]
+models = ["CGal_4_30_0.01_D_5000", "CGal_4_40_0.01_D_5000", "CGal_4_50_0.01_D_5000", "CGal_4_60_0.01_D_5000", "CGal_4_70_0.01_D_5000", "CGal_4_80_0.01_D_5000"] 
+beamsizes = np.full(len(models),60)  
+halfbeams = np.full(len(models),30)
+centres = np.full(len(models),25.5)
+fitsnames = [ "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_30_0.01/CGal_4_30_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_40_0.01/CGal_4_40_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_50_0.01/CGal_4_50_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_60_0.01/CGal_4_60_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_70_0.01/CGal_4_70_0.01.fits",\
+              "/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_80_0.01/CGal_4_80_0.01.fits"]
+
 # Ensure all lists have the same length
 assert """ len(vrots) == len(vdisps) == len(incs) == len(phis) == len(denss) ==  len(fittings) == """ 
 

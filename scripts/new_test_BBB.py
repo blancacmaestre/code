@@ -123,13 +123,13 @@ class BayesianBBaroloMod(BayesianBBarolo):
         #res=res_abs(model=model, data=data, noise=1, mask=mask, multiplier=1000)
 
         #Option B Standard absolute residuals: cube noise, residual muplitied by 1000 as done before
-        res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
+        #res=res_abs(model=model, data=data, noise=self.noise, mask=mask, multiplier=1000)
 
         #Option C Standard Gaussian residuals: cube noise,
         #res=res_Gaussian(model=model, data=data, noise=self.noise, mask=mask, multiplier=1)
 
         #Option D Gaussian residuals: no noise
-        #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
+        res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1)
 
         #Option E Gaussian residuals: no noise, multiplied by 1000
         #res=res_Gaussian(model=model, data=data, noise=1, mask=mask, multiplier=1000)
@@ -143,21 +143,21 @@ class BayesianBBaroloMod(BayesianBBarolo):
 
 
 # Name of the FITS file to be fitted
-model = "CGal_4_70_0.01_D"
-centre = 25.5
-fitsname = f"/home/user/THESIS/models/A_MODELS_new/new_attempt/CGal_4_70_0.01/CGal_4_70_0.01.fits"
+model = "CGal_5_70_0.01_D_3000"
+centre = 38.5
+fitsname = f"/home/user/THESIS/models/A_MODELS_new/new_PA/CGal_5_70_0.01/CGal_5_70_0.01.fits"
 #freepar = ['inc_single']
 #freepar = ['vrot','vdisp']
 freepar = ['vrot','vdisp','inc_single','phi_single']
 #Uncomment to fit the density
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/tests_all_resolution"
+output = "/home/user/THESIS/tests_all_resolution/newPA2"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
 
 # Initializing rings. 
-f3d.init(radii=np.arange(30,240,60),xpos=centre,ypos=centre,vsys=0.0,\
+f3d.init(radii=np.arange(24,240,48),xpos=centre,ypos=centre,vsys=0.0,\
          vrot=100,vdisp=10,vrad=0,z0=30,inc=70,phi=0)
 
 # Here it is possible to give any other BBarolo parameter, for example to control
@@ -179,7 +179,13 @@ f3d.bounds['ypos']  = [20,30]
 f3d.bounds['vsys']  = [-20,20]
 f3d.bounds['dens']  = [1,30] """
 
-#f3d.priors['vrot']["loc"]= [50,200]
+
+
+
+""" f3d.priors['inc']["loc"]= [10]
+f3d.priors['inc']["scale"]= [80]
+f3d.priors['phi']["loc"]= [10]
+f3d.priors['phi']["scale"]= [300]   """   
 
 
 # Keywords to be passed to the sample run
@@ -188,7 +194,7 @@ run_kwargs = dict()
 sample_kwargs = dict()
 
 # Running the fit with dynesty.
-f3d.compute(threads=8,useBBres=False,method='nautilus',dynamic=True,
+f3d.compute(threads=8,useBBres=False,method='dynesty',dynamic=True,
             freepar=freepar,run_kwargs=run_kwargs,sample_kwargs=sample_kwargs)
 
 print (f3d.params,f3d._log_likelihood(f3d.params))

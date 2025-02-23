@@ -11,7 +11,7 @@ RMS noise in Jy/beam = 0.01
 
 GALAXY PARAMETERS
 
-SNR = 4.439972286423047
+SNR = 5.716965892858672
 Maximum radius of galaxy = 240
 Beam width = 60
 Number of radii = 12
@@ -26,6 +26,6 @@ Velocity dispersion shape = constant
 
 GEOMETRY
 Position angle = 30.0
-Inclination = 30.0
+Inclination = 70.0
 Thickness = 30.0
 Systemic velocity (km/s) = 0

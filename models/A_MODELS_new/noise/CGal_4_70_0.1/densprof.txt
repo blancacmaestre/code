@@ -1,0 +1,27 @@
+# ELLPROF results for CGal_4_70_0.1
+#
+# Map units: u = JY/BEAM*KM/S
+# Pixel area: 400.00000 arcs2
+#
+# Columns 2-6  : ring statistics (sum, mean, median, standard deviation and median absolute deviation from the median) in map units (see above).
+# Column  7    : effective number of valid pixels within the ring.
+# Columns 8-10 : surface density, its error and face-on surface density (inclination corrected).
+# Columns 11   : effective number of blank pixels within the ring.
+# Columns 12-13: surface density and face-on surface density including area covered by blank pixels (total area: NPIX + NPIXBL).
+# Columns 14-16: (ONLY FOR HI DATA!) face-on (inclination corrected) number surface density and mass surface densities with two different techniques.
+#
+#  RADIUS       SUM      MEAN    MEDIAN    STDDEV       MAD      NPIX     SDENS    ERR_SD  SDENS_FO    NPIXBL   SDENSBL SDENSBL_FO  SDENS_FO  MASSDENS MASSDENS2 
+#  arcsec         u         u         u         u         u       pix   u/arcs2   u/arcs2   u/arcs2       pix   u/arcs2    u/arcs2  1E20/cm2  Msun/pc2  Msun/pc2 
+#
+    0.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 5.000e-01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+   20.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 2.000e+00 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+   40.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 4.000e+00 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+   60.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 7.000e+00 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+   80.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 8.500e+00 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  100.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 1.050e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  120.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 1.200e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  140.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 1.600e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  160.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 1.800e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  180.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 1.950e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  200.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 2.000e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 
+  220.000 0.000e+00 0.000e+00 4.634e-310 0.000e+00 4.634e-310 0.000e+00 0.000e+00 0.000e+00 0.000e+00 2.350e+01 0.000e+00  0.000e+00 0.000e+00 0.000e+00 0.000e+00 

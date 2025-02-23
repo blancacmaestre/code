@@ -2,7 +2,7 @@
 # This way, we can override any other installed version and 
 # modify pyBBarolo without the need of reinstalling it every time
 import sys
-sys.path.insert(0,'/Users/blanca/Documents/TESIS/software/Bbarolo')
+sys.path.insert(0,'/home/user/Bbarolo')
 
 # This should give version 1.3.3dev!
 from pyBBarolo import version
@@ -21,6 +21,7 @@ import argparse
 import gc
 from contextlib import redirect_stdout, redirect_stderr, ExitStack
 import os
+import corner
 
 class Tee:
     def __init__(self, *files):
@@ -182,7 +183,7 @@ model = model
 fitsname = fitsname
 freepar = ['vrot','vdisp','inc_single','phi_single']
 #freepar = ['vrot','vdisp','dens','inc_single','phi_single']
-output = "/home/user/THESIS/tests_all_resolution/newPA"
+output = "/home/user/THESIS/tests_all_resolution/inclination_livepoints"
 
 # Creating an object for bayesian barolo
 f3d = BayesianBBaroloMod(fitsname)
@@ -236,10 +237,19 @@ with open(output_file_path, 'w') as f:
         f3d.write_bestmodel()
 
         # Print some statistics of the sample
-        f3d.print_stats()
+        #f3d.print_stats()s
+
+        print(f3d.samples)
 
         # Print summary of results
         f3d.results.summary()
+
+
+""" cfig =corner.corner(
+    f3d.samples, weights=f3d.weights, labels=f3d.freepar_names, color='purple',
+    plot_datapoints=False, label_kwargs=dict(fontsize=20))
+
+cfig.savefig(f'{output}/{model}/{model}_corner.pdf',bbox_inches='tight') """
 
 # Plot the 2-D marginalized posteriors.
 quantiles = [0.16,0.50,0.84]
@@ -259,6 +269,3 @@ tfig.savefig(f'{output}/{model}/{model}_trace.pdf',bbox_inches='tight')
 
 del f3d
 gc.collect()
-
-################################################################################################################
-#HOW I HAVE TO CREATE THE GALAXY FOR THE BEST MODEL
